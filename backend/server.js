@@ -8,7 +8,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import "./config/cloudinary.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
-import mpesaRoutes from "./routes/mpesaRoutes.js";
+import MpesaRoutes from "./routes/MpesaRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
 process.on("unhandledRejection", (err) => {
