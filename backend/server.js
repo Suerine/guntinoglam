@@ -26,7 +26,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  // "https://gof-ecommerce-website.vercel.app",
+  "https://guntinoglam.vercel.app/",
 ];
 
 app.use(
