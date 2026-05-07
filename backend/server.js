@@ -26,7 +26,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://guntinoglam.vercel.app/",
+  "https://guntinoglam.vercel.app",
 ];
 
 app.use(
@@ -46,6 +46,8 @@ app.use(
     credentials: true,
   }),
 );
+
+app.options("*", cors());
 
 app.use(express.json());
 
