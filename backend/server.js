@@ -56,7 +56,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/payments/mpesa", mpesaRoutes);
+app.use("/api/payments/mpesa", MpesaRoutes);
 
 app.get("/", (req, res) => {
   res.send("GOF Store API is running...");
