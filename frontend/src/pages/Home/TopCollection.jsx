@@ -2,7 +2,7 @@ import React from 'react'
 import topcollectionImg1 from "../../assets/images/IMGT0636.jpg"
 import { Link } from 'react-router-dom'
 
-const Topcollection = ({ isMobile }) => {
+const TopCollection = ({ isMobile }) => {
   return (
     <section
       id="top-collection-section"
@@ -138,4 +138,4 @@ const Topcollection = ({ isMobile }) => {
   )
 }
 
-export default Topcollection
+export default TopCollection

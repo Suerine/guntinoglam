@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Navbar from '../../components/layout/Navbar'
 import HeroSection from './HeroSection'
 import CardsSection from './CardsSection'
-import Topcollection from './Topcollection'
+import TopCollection from './TopCollection'
 import Footer from '../../components/layout/Footer'
 
 const Home = () => {
@@ -27,7 +27,7 @@ const Home = () => {
       >
         <HeroSection />
         <CardsSection isMobile={isMobile} />
-        <Topcollection isMobile={isMobile} />
+        <TopCollection isMobile={isMobile} />
         <section style={{
          scrollSnapAlign: 'start',
          flexShrink: 0,
