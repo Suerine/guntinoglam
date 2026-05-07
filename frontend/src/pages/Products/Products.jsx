@@ -21,6 +21,9 @@ function Products() {
   const collectionParam = searchParams.get("collection")
   const [collection, setCollection] = useState(collectionParam || "All")
 
+  const [collectionOpen, setCollectionOpen] = useState(false)
+  const [categoryOpen, setCategoryOpen] = useState(false)
+
   const filteredProducts = (products || []).filter((product) =>
     product.name.toLowerCase().includes(search?.toLowerCase() || "")
   )
@@ -155,48 +158,96 @@ function Products() {
       </div>
 
       {/* Filters */}
-      <div style={{
-        background: '#FFF5FF',
-        backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(0,0,0,0.06)',
-        padding: '1rem 2.5rem',
-        position: 'sticky',
-        top: 0,
-        zIndex: 30,
-      }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          {/* Collections row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
-            <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)', marginRight: '0.5rem', whiteSpace: 'nowrap' }}>
-              Collection
-            </span>
-            {COLLECTIONS.map((col) => (
-              <button
-                key={col}
-                onClick={() => setCollection(col)}
-                className={`filter-pill ${collection === col ? 'active' : 'inactive'}`}
-              >
-                {col}
-              </button>
-            ))}
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        {/* MOBILE: Dropdowns */}
+        <div className="flex md:hidden gap-3 px-4 py-3">
+          {/* Collection Dropdown */}
+          <div className="relative flex-1">
+            <button
+              onClick={() => { setCollectionOpen(!collectionOpen); setCategoryOpen(false) }}
+              className="w-full flex items-center justify-between px-4 py-3 border border-black/20 text-xs tracking-widest uppercase font-light"
+            >
+              <span>{collection || 'Collection'}</span>
+              <span style={{ fontSize: '0.6rem' }}>{collectionOpen ? '▲' : '▼'}</span>
+            </button>
+            {collectionOpen && (
+              <div className="absolute top-full left-0 w-full bg-white border border-black/10 z-50 shadow-sm">
+                {COLLECTIONS.map((col) => (
+                  <button
+                    key={col}
+                    onClick={() => { setCollection(col); setCollectionOpen(false) }}
+                    className="w-full text-left px-4 py-3 text-xs tracking-widest uppercase font-light hover:bg-black/5"
+                    style={{ color: collection === col ? 'black' : 'rgba(0,0,0,0.5)' }}
+                  >
+                    {col}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Categories row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto' }}>
-            <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)', marginRight: '0.5rem', whiteSpace: 'nowrap' }}>
-              Category
-            </span>
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`filter-pill ${category === cat ? 'active' : 'inactive'}`}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* Category Dropdown */}
+          <div className="relative flex-1">
+            <button
+              onClick={() => { setCategoryOpen(!categoryOpen); setCollectionOpen(false) }}
+              className="w-full flex items-center justify-between px-4 py-3 border border-black/20 text-xs tracking-widest uppercase font-light"
+            >
+              <span>{category || 'Category'}</span>
+              <span style={{ fontSize: '0.6rem' }}>{categoryOpen ? '▲' : '▼'}</span>
+            </button>
+            {categoryOpen && (
+              <div className="absolute top-full left-0 w-full bg-white border border-black/10 z-50 shadow-sm">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => { setCategory(cat); setCategoryOpen(false) }}
+                    className="w-full text-left px-4 py-3 text-xs tracking-widest uppercase font-light hover:bg-black/5"
+                    style={{ color: category === cat ? 'black' : 'rgba(0,0,0,0.5)' }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
+
+        {/* DESKTOP: Pills */}
+         <div className="hidden md:block px-6 py-4">
+           {/* Collections row */}
+           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
+             <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)', marginRight: '0.5rem', whiteSpace: 'nowrap' }}>
+               Collection
+             </span>
+             {COLLECTIONS.map((col) => (
+               <button
+                 key={col}
+                 onClick={() => setCollection(col)}
+                 className={`filter-pill ${collection === col ? 'active' : 'inactive'}`}
+               >
+                 {col}
+               </button>
+             ))}
+           </div>
+
+           {/* Categories row */}
+           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto' }}>
+             <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)', marginRight: '0.5rem', whiteSpace: 'nowrap' }}>
+               Category
+             </span>
+             {CATEGORIES.map((cat) => (
+               <button
+                 key={cat}
+                 onClick={() => setCategory(cat)}
+                 className={`filter-pill ${category === cat ? 'active' : 'inactive'}`}
+               >
+                 {cat}
+               </button>
+             ))}
+           </div>
+         </div>
+
+
       </div>
 
       {/* Body */}
