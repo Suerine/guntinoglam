@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+}
+
+.nav-link-item {
+  position: relative;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.90rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: rgba(0, 0, 0, 0.618);
+  transition: color 0.2s ease;
+}
+
+.nav-link-item:hover { color: black; }
+.nav-link-item:hover::after { width: 100%; }
+
+
