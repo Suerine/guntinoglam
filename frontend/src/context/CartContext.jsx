@@ -45,7 +45,7 @@ const addToCart = async (product, selectedSize, selectedColor) => {
   const showToast = () => {
     toast.custom(() => (
       <div style={{
-        background: '#FFF5FF',
+        background: '#FFF7FF',
         border: '1px solid rgba(0,0,0,0.06)',
         boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
         padding: '1rem',

@@ -40,7 +40,7 @@ const CardsSection = ({ isMobile }) => {
   }
 
   return (
-    <div className="flex w-full gap-1" style={{ height: '100vh', scrollSnapAlign: 'start', scrollSnapStop: 'always', flexShrink: 0, background: '#FFF5FF' }}>
+    <div className="flex w-full gap-1" style={{ height: '100vh', scrollSnapAlign: 'start', scrollSnapStop: 'always', flexShrink: 0, background: '#FFF7FF' }}>
       {cards.map((card) => (
         <Link key={card.id} to={`/products?collection=${card.collection}`} className="relative flex-1 overflow-hidden group">
           <img src={card.image} alt={card.title} className="w-full h-full object-cover" />

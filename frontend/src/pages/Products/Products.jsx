@@ -5,6 +5,8 @@ import ProductsPage from "./ProductPage"
 import { Link, useSearchParams } from "react-router-dom"
 import { FiSearch, FiSliders } from "react-icons/fi"
 import Navbar from "../../components/layout/Navbar"
+import FilterDrawer from "../../components/ui/FilterDrawer"
+import { FilterTrigger } from "../../components/ui/FilterDrawer"
 
 
 const CATEGORIES = ["All", "Dirac"]
@@ -52,7 +54,7 @@ function Products() {
 
   return (
    <>
-    <div style={{ minHeight: '100vh', background: 'rgb(252, 240, 252)' }}>
+    <div style={{ minHeight: '100vh', background: '#FFF7FF' }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
@@ -107,151 +109,47 @@ function Products() {
         }
       `}</style>
 
-      {/* Hero header */}
-      <div style={{
-        background: '#FFF5FF',
-        padding: '8.5rem 2.5rem 1.5rem',
-        position: 'relative',
-        overflow: 'hidden',
-        borderBottom: '1px solid rgba(0,0,0,0.06)',
-      }}>
-        {/* Decorative circles */}
-        <div style={{ position: 'absolute', top: '-4rem', right: '-4rem', width: '20rem', height: '20rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.2)' }} ></div>
-        <div style={{ position: 'absolute', bottom: '-6rem', left: '10rem', width: '25rem', height: '25rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.2)' }} ></div>
+    {/* Filters */}
+     <FilterDrawer
+       collection={collection}
+       setCollection={setCollection}
+       category={category}
+       setCategory={setCategory}
+       COLLECTIONS={COLLECTIONS}
+       CATEGORIES={CATEGORIES}
+     />
 
-        <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <p style={{
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.6rem',
-            letterSpacing: '0.4em',
-            textTransform: 'uppercase',
-            color: '#191A23',
-            marginBottom: '1rem',
-          }}>
-            {search ? `Search — "${search}"` : collection !== "All" ? collection : "Full Collection"}
-          </p>
+     {/* Page header bar */}
+     <div 
+      className="pt-28 md:pt-32 pb-2 px-2"
+      style={{
+       background: '#FFF7FF',
+       borderBottom: '1px solid rgba(0,0,0,0.06)',
+       display: 'flex',
+       alignItems: 'center',
+       justifyContent: 'space-between',
+     }}>
+      <FilterTrigger
+           onClick={() => document.getElementById('filter-drawer-open').click()}
+           activeCount={(collection !== 'All' ? 1 : 0) + (category !== 'All' ? 1 : 0)}
+         />
+       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+         {!loading && (
+           <p style={{
+             fontFamily: 'Montserrat, sans-serif',
+             fontSize: '0.55rem',
+             letterSpacing: '0.2em',
+             color: 'rgba(0,0,0,0.3)',
+             textTransform: 'uppercase',
+           }}>
+             {filteredProducts.length} piece{filteredProducts.length !== 1 ? 's' : ''}
+           </p>
+         )}
+       </div>
+     </div>
 
-          <h1 style={{
-            fontFamily: '"Cormorant Garamond", serif',
-            fontSize: 'clamp(3.5rem, 8vw, 5rem)',
-            fontWeight: 300,
-            color: '#191A23',
-            lineHeight: 1,
-            letterSpacing: '0.05em',
-            marginBottom: '1.5rem',
-          }}>
-            {search ? "Results" : "Shop"}
-          </h1>
-
-          {!loading && (
-            <p style={{
-              fontFamily: 'Montserrat, sans-serif',
-              fontSize: '0.65rem',
-              letterSpacing: '0.2em',
-              color: 'rgba(0,0,0,0.4)',
-              textTransform: 'uppercase',
-            }}>
-              {filteredProducts.length} piece{filteredProducts.length !== 1 ? 's' : ''}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        {/* MOBILE: Dropdowns */}
-        <div className="flex md:hidden gap-3 px-4 py-3">
-          {/* Collection Dropdown */}
-          <div className="relative flex-1">
-            <button
-              onClick={() => { setCollectionOpen(!collectionOpen); setCategoryOpen(false) }}
-              className="w-full flex items-center justify-between px-4 py-3 border border-black/20 text-xs tracking-widest uppercase font-light"
-            >
-              <span>{collection || 'Collection'}</span>
-              <span style={{ fontSize: '0.6rem' }}>{collectionOpen ? '▲' : '▼'}</span>
-            </button>
-            {collectionOpen && (
-              <div className="absolute top-full left-0 w-full bg-white border border-black/10 z-50 shadow-sm">
-                {COLLECTIONS.map((col) => (
-                  <button
-                    key={col}
-                    onClick={() => { setCollection(col); setCollectionOpen(false) }}
-                    className="w-full text-left px-4 py-3 text-xs tracking-widest uppercase font-light hover:bg-black/5"
-                    style={{ color: collection === col ? 'black' : 'rgba(0,0,0,0.5)' }}
-                  >
-                    {col}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Category Dropdown */}
-          <div className="relative flex-1">
-            <button
-              onClick={() => { setCategoryOpen(!categoryOpen); setCollectionOpen(false) }}
-              className="w-full flex items-center justify-between px-4 py-3 border border-black/20 text-xs tracking-widest uppercase font-light"
-            >
-              <span>{category || 'Category'}</span>
-              <span style={{ fontSize: '0.6rem' }}>{categoryOpen ? '▲' : '▼'}</span>
-            </button>
-            {categoryOpen && (
-              <div className="absolute top-full left-0 w-full bg-white border border-black/10 z-50 shadow-sm">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => { setCategory(cat); setCategoryOpen(false) }}
-                    className="w-full text-left px-4 py-3 text-xs tracking-widest uppercase font-light hover:bg-black/5"
-                    style={{ color: category === cat ? 'black' : 'rgba(0,0,0,0.5)' }}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* DESKTOP: Pills */}
-         <div className="hidden md:block px-6 py-4">
-           {/* Collections row */}
-           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
-             <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)', marginRight: '0.5rem', whiteSpace: 'nowrap' }}>
-               Collection
-             </span>
-             {COLLECTIONS.map((col) => (
-               <button
-                 key={col}
-                 onClick={() => setCollection(col)}
-                 className={`filter-pill ${collection === col ? 'active' : 'inactive'}`}
-               >
-                 {col}
-               </button>
-             ))}
-           </div>
-
-           {/* Categories row */}
-           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto' }}>
-             <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)', marginRight: '0.5rem', whiteSpace: 'nowrap' }}>
-               Category
-             </span>
-             {CATEGORIES.map((cat) => (
-               <button
-                 key={cat}
-                 onClick={() => setCategory(cat)}
-                 className={`filter-pill ${category === cat ? 'active' : 'inactive'}`}
-               >
-                 {cat}
-               </button>
-             ))}
-           </div>
-         </div>
-
-
-      </div>
-
-      {/* Body */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto', }}>
+     {/* Body — no top padding needed, header handles it */}
+     <div style={{ maxWidth: '1400px', margin: '0 auto' }} className="pb-6">
 
         {/* Skeletons */}
         {loading && (

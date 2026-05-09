@@ -1,5 +1,5 @@
 import React from 'react'
-import HeroBackground from "../../assets/images/GuntinoGlam-GroupPhoto.png";
+import HeroBackground from "../../assets/images/HeroImg5.jpg";
 import { ChevronDown } from 'lucide-react';
 
 const HeroSection = () => {

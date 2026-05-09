@@ -1,0 +1,159 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+const About = ({ isMobile }) => {
+  return (
+    <section
+      style={{
+        width: '100vw',
+        height: '100vh',
+        position: 'relative',
+        overflow: 'hidden',
+        scrollSnapAlign: 'start',
+        flexShrink: 0,
+        background: '#FFF7FF',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap');
+        .about-stat { border-left: 1px solid rgba(0,0,0,0.08); padding-left: 1.5rem; }
+        .about-link:hover { background: #000 !important; }
+      `}</style>
+
+      {/* Ghost watermark */}
+      <p style={{
+        position: 'absolute',
+        bottom: '-2rem',
+        left: '-1rem',
+        fontFamily: '"Cormorant Garamond", serif',
+        fontSize: 'clamp(4rem, 15vw, 10rem)',
+        fontWeight: 300,
+        color: 'rgba(0,0,0,0.03)',
+        lineHeight: 1,
+        userSelect: 'none',
+        whiteSpace: 'nowrap',
+        pointerEvents: 'none',
+        textTransform: 'uppercase',
+      }}>
+        Guntino Glam
+      </p>
+
+      {/* Decorative circles */}
+      <div style={{ position: 'absolute', top: '-8rem', right: '-8rem', width: '32rem', height: '32rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.05)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: '-4rem', right: '-4rem', width: '20rem', height: '20rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.04)', pointerEvents: 'none' }} />
+
+      {/* Main content */}
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        width: '100%',
+        maxWidth: '1200px',
+        padding: isMobile ? '0 1.5rem' : '0 2.5rem',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1px 1fr',
+        gap: isMobile ? '1.5rem' : '4rem',
+        alignItems: 'center',
+      }}>
+
+        {/* Left — heading */}
+        <div>
+          <p style={{
+            fontFamily: 'Montserrat, sans-serif',
+            fontSize: '0.55rem',
+            letterSpacing: '0.45em',
+            textTransform: 'uppercase',
+            color: 'rgba(0,0,0,0.3)',
+            marginBottom: '1rem',
+          }}>
+            Who we are
+          </p>
+
+          <h1 style={{
+            fontFamily: '"Cormorant Garamond", serif',
+            fontSize: isMobile ? '2.5rem' : 'clamp(2.8rem, 6vw, 5.5rem)',
+            fontWeight: 300,
+            color: '#191A23',
+            lineHeight: 1.1,
+            letterSpacing: '0.02em',
+            marginBottom: isMobile ? '1rem' : '2rem',
+          }}>
+            Rooted in<br />
+            heritage.<br />
+            <em style={{ color: 'rgba(0,0,0,0.35)' }}>Dressed for today.</em>
+          </h1>
+        </div>
+
+        {/* Divider — desktop only */}
+        {!isMobile && (
+          <div style={{ width: '1px', height: '60%', background: 'rgba(0,0,0,0.08)', margin: '0 auto' }} />
+        )}
+
+        {/* Right — copy */}
+        <div>
+          {/* Thin line */}
+          <div style={{ width: '2rem', height: '1px', background: 'rgba(0,0,0,0.15)', marginBottom: '1.25rem' }} />
+
+          <p style={{
+            fontFamily: '"Cormorant Garamond", serif',
+            fontSize: isMobile ? '1rem' : '1.35rem',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            lineHeight: 1.85,
+            color: 'rgba(0,0,0,0.5)',
+            marginBottom: '1rem',
+          }}>
+            "We started Guntino Glam to celebrate Somali dress — not as a relic of the past, but as a living, breathing art form."
+          </p>
+
+            <p style={{
+              fontFamily: 'Montserrat, sans-serif',
+              fontSize: '0.68rem',
+              letterSpacing: '0.05em',
+              lineHeight: 2,
+              color: 'rgba(0,0,0,0.4)',
+              marginBottom: '2rem',
+            }}>
+              Based in Nairobi, we sell and rent Dirac made for weddings. With collections such as Guntino, Maqbal and Faransawi, our pieces are curated for the modern Somali woman. Each piece is selected for its craftsmanship, story, and ability to make you feel like yourself — only more so.
+            </p>
+
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', marginTop: isMobile ? '1rem' : '0' }}>
+            <Link
+              to="/products"
+              className="about-link"
+              style={{
+                fontFamily: 'Montserrat, sans-serif',
+                fontSize: '0.6rem',
+                letterSpacing: '0.35em',
+                textTransform: 'uppercase',
+                color: '#fff',
+                background: '#191A23',
+                textDecoration: 'none',
+                padding: '0.75rem 1.75rem',
+                transition: 'background 0.3s ease',
+                display: 'inline-block',
+              }}
+            >
+              Shop now
+            </Link>
+
+            <p style={{
+              fontFamily: 'Montserrat, sans-serif',
+              fontSize: '0.55rem',
+              letterSpacing: '0.15em',
+              color: 'rgba(0,0,0,0.25)',
+              textTransform: 'uppercase',
+            }}>
+              Nairobi, Kenya
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+export default About

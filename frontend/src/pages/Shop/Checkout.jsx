@@ -113,7 +113,7 @@ const CheckoutPage = () => {
 
   if (!cart || items.length === 0) {
     return (
-      <div style={{ minHeight: '100vh', background: '#FFF5FF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
+      <div style={{ minHeight: '100vh', background: '#FFF7FF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
         <h2 style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.5rem', fontWeight: 300, color: 'rgba(0,0,0,0.3)' }}>Nothing to checkout</h2>
         <Link to="/products" style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#191A23', textDecoration: 'underline' }}>Browse collection</Link>
       </div>
@@ -121,7 +121,7 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFF5FF' }}>
+    <div style={{ minHeight: '100vh', background: '#FFF7FF' }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400;500&display=swap'); .checkout-input:focus { border-bottom-color: rgba(0,0,0,0.5) !important; }`}</style>
 
       <CheckoutHeader step={step} />

@@ -67,7 +67,7 @@ function AuthPage() {
   }
 
   return (
-    <div style={{ height: '100vh', display: 'flex', background: '#FFF5FF' }}>
+    <div style={{ height: '100vh', display: 'flex', background: '#FFF7FF' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
         .auth-input:focus { border-bottom-color: rgba(0,0,0,0.5) !important; }

@@ -15,7 +15,7 @@ const TopCollection = ({ isMobile }) => {
         flexShrink: 0,
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
-        background: '#FFF5FF',
+        background: '#FFF7FF',
       }}
     >
       {/* Image side */}
@@ -38,8 +38,8 @@ const TopCollection = ({ isMobile }) => {
         <div style={{
           position: 'absolute', inset: 0,
           background: isMobile
-            ? 'linear-gradient(to bottom, transparent 60%, #FFF5FF 100%)'
-            : 'linear-gradient(to right, transparent 60%, #FFF5FF 100%)',
+            ? 'linear-gradient(to bottom, transparent 60%, #FFF7FF 100%)'
+            : 'linear-gradient(to right, transparent 60%, #FFF7FF 100%)',
         }} />
       </div>
 

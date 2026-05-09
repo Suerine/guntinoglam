@@ -39,7 +39,7 @@ const CartPage = () => {
   // Empty state
   if (!cart || cart.items?.length === 0) {
     return (
-      <div style={{ minHeight: '100vh', background: '#FFF5FF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
+      <div style={{ minHeight: '100vh', background: '#FFF7FF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400&display=swap');`}</style>
         <FiShoppingCart style={{ fontSize: '2rem', color: 'rgba(0,0,0,0.15)' }} />
         <div style={{ textAlign: 'center' }}>
@@ -73,13 +73,13 @@ const CartPage = () => {
   const totalPrice = normalizedItems.reduce((total, item) => total + item.price * item.quantity, 0)
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFF5FF' }}>
+    <div style={{ minHeight: '100vh', background: '#FFF7FF' }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400&display=swap');`}</style>
 
       {/* Header */}
       {/* Hero header */}
       <div style={{
-        background: '#FFF5FF',
+        background: '#FFF7FF',
         padding: '8.5rem 2.5rem 1.5rem',
         position: 'relative',
         overflow: 'hidden',

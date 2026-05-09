@@ -7,7 +7,7 @@ export default {
         primary: "#FF99D8",
         secondary: "#191A23",
         bg: "#F9F9F9",
-        bg2: "#FFF5FF",
+        bg2: "#FFF7FF",
       },
       fontFamily: {
         playfair: ["Playfair Display", "serif"],

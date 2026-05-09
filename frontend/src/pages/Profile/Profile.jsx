@@ -9,7 +9,7 @@ function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#FFF5FF] flex justify-center items-center px-4">
+      <div className="min-h-screen bg-[#FFF7FF] flex justify-center items-center px-4">
         <div className="text-center">
           <style>{`
             @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@600;700&display=swap');
@@ -41,7 +41,7 @@ function ProfilePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#FFF5FF] py-6 sm:py-12">
+    <div className="min-h-screen bg-[#FFF7FF] py-6 sm:py-12">
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@600;700&display=swap');
@@ -51,7 +51,7 @@ function ProfilePage() {
       `}</style>
 
       {/* Hero banner */}
-      <div className="bg-[#FFF5FF] text-[#191A23] px-4 sm:px-6 lg:px-10 py-16 sm:py-24 relative overflow-hidden mb-12 sm:mb-16 border-b border-gray-200">
+      <div className="bg-[#FFF7FF] text-[#191A23] px-4 sm:px-6 lg:px-10 py-16 sm:py-24 relative overflow-hidden mb-12 sm:mb-16 border-b border-gray-200">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-pink-500/10 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-pink-500/5 to-transparent rounded-full blur-3xl" />

@@ -2,9 +2,14 @@ import { Link } from 'react-router-dom'
 import Guntino_Logo from "../../assets/images/GuntinoGlam.jpg"
 
 const Footer = () => {
+
+  const socials = [
+   { label: 'Instagram', url: 'https://www.instagram.com/guntino_glam/' },
+   { label: 'TikTok', url: 'https://www.tiktok.com/@guntino_glam' },
+   ]
   return (
     <footer style={{
-       background: '#FFF5FF',
+       background: '#FFF7FF',
        color: '#191A23',
        minHeight: '100vh',
        display: 'flex',
@@ -196,19 +201,20 @@ const Footer = () => {
           © 2025 Guntino Glam. All rights reserved.
         </p>
 
-        <div style={{ display: 'flex', gap: '2rem' }}>
-          {['Instagram', 'TikTok', 'Pinterest'].map(social => (
-            <a
-              key={social}
-              href="#"
+       <div style={{ display: 'flex', gap: '2rem' }}>
+          {socials.map(({ label, url }) => (
+             <a
+              key={label}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
               className="footer-link"
               style={{ marginBottom: 0 }}
             >
-              {social}
+              {label}
             </a>
           ))}
         </div>
-
         <p style={{
           fontFamily: 'Montserrat, sans-serif',
           fontSize: '0.6rem',

@@ -29,7 +29,7 @@ const CartToast = ({ product, selectedSize, selectedColor }) => {
           height: '0.75rem',
           borderRadius: '50%',
           background: '#4ade80',
-          border: '2px solid #FFF5FF',
+          border: '2px solid #FFF7FF',
         }} />
       </div>
 

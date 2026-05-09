@@ -132,9 +132,9 @@ function Navbar() {
 
   // Nav style — transparent only on home hero (desktop only), solid on mobile
   const navBackground = isMobile
-    ? "#FFF5FF"                        // solid on mobile
+    ? "#FFF7FF"                        // solid on mobile
     : !isHome
-      ? "#FFF5FF"                      // solid on other pages (desktop)
+      ? "#FFF7FF"                      // solid on other pages (desktop)
       : pastHero
         ? "rgba(255,236,247,0)"        // past hero on home (desktop)
         : "transparent"                // over hero on home (desktop)

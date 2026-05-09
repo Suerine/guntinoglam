@@ -45,7 +45,7 @@ function Wishlist() {
       <div style={{ minHeight: '100vh', background: 'rgb(252, 240, 252)' }}>
         {styles}
         <div style={{
-          background: '#FFF5FF',
+          background: '#FFF7FF',
           padding: '8.5rem 2.5rem 1.5rem',
           position: 'relative',
           overflow: 'hidden',
@@ -127,12 +127,12 @@ function Wishlist() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFF5FF' }}>
+    <div style={{ minHeight: '100vh', background: '#FFF7FF' }}>
       {styles}
 
       {/* Hero header */}
       <div style={{
-        background: '#FFF5FF',
+        background: '#FFF7FF',
         padding: '8.5rem 2.5rem 1.5rem',
         position: 'relative',
         overflow: 'hidden',

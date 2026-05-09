@@ -50,7 +50,7 @@ const ProductPage = () => {
   }, [id])
 
   if (!product) return (
-    <div className="min-h-screen bg-[#FFF5FF] flex items-center justify-center">
+    <div className="min-h-screen bg-[#FFF7FF] flex items-center justify-center">
       <div className="text-center">
         <div className="w-10 h-10 border-2 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4" />
         <p className="prod-dm text-gray-400 text-sm tracking-widest uppercase">Loading</p>
@@ -63,7 +63,7 @@ const ProductPage = () => {
   const originalPrice = product.originalPrice
 
   return (
-    <div className="min-h-screen bg-[#FFF5FF] py-6 sm:py-12">
+    <div className="min-h-screen bg-[#FFF7FF] py-6 sm:py-12">
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@600;700&display=swap');

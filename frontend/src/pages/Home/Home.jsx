@@ -3,6 +3,7 @@ import Navbar from '../../components/layout/Navbar'
 import HeroSection from './HeroSection'
 import CardsSection from './CardsSection'
 import TopCollection from './TopCollection'
+import About from './About'
 import Footer from '../../components/layout/Footer'
 
 const Home = () => {
@@ -28,11 +29,12 @@ const Home = () => {
         <HeroSection />
         <CardsSection isMobile={isMobile} />
         <TopCollection isMobile={isMobile} />
+        <About isMobile={isMobile}/>
         <section style={{
          scrollSnapAlign: 'start',
          flexShrink: 0,
          minHeight: '100vh', // min instead of fixed, lets footer content dictate height
-         background: '#FFF5FF'
+         background: '#FFF7FF'
        }}>
          <Footer />
        </section>

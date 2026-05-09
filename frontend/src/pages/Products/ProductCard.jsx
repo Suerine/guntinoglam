@@ -57,27 +57,6 @@ function ProductCard({ product }) {
             background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)',
           }} />
 
-          {/* Rental badge */}
-          {product.isRentable && (
-            <div style={{
-              position: 'absolute',
-              top: '0.75rem',
-              left: '0.75rem',
-              fontFamily: 'Montserrat, sans-serif',
-              fontSize: '0.45rem',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: '#fff',
-              background: 'rgba(0,0,0,0.5)',
-              backdropFilter: 'blur(6px)',
-              padding: '0.25rem 0.6rem',
-              borderRadius: '999px',
-              border: '1px solid rgba(255,255,255,0.15)',
-            }}>
-              Rent Available
-            </div>
-          )}
-
           {/* Wishlist button */}
           <button
             onClick={async (e) => {

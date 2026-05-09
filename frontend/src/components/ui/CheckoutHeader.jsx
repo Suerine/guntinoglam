@@ -1,7 +1,7 @@
 import { FiCheck } from "react-icons/fi"
 
 const CheckoutHeader = ({ step }) => (
-  <div style={{ background: '#FFF5FF', padding: '8.2rem 2.5rem 3rem', position: 'relative', overflow: 'hidden', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+  <div style={{ background: '#FFF7FF', padding: '8.2rem 2.5rem 3rem', position: 'relative', overflow: 'hidden', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
     <div style={{ position: 'absolute', top: '-4rem', right: '-4rem', width: '20rem', height: '20rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.2)' }} />
     <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
       <div>
