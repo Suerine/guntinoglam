@@ -34,6 +34,9 @@ function Navbar() {
   const navigate = useNavigate()
   const scrollContainerRef = useRef(null)
 
+  const [searchOpen, setSearchOpen] = useState(false)
+  const searchInputRef = useRef(null)
+
   useEffect(() => {
   const hero = document.getElementById("hero-section")
   if (!hero) return
@@ -193,71 +196,127 @@ function Navbar() {
 
             {/* Right side */}
             <div className="flex items-center gap-4 sm:gap-5 flex-1 justify-end">
-              {/* Wishlist */}
-              <Link to="/wishlist" className="relative transition-colors duration-200 nav-link-item">
-                Wishlist
-                {wishlist.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-pink-400 text-white text-[10px] min-w-[16px] h-4 w-4 px-[4px] flex items-center justify-center rounded-full leading-none font-bold">
-                    {wishlist.length}
+
+            {/* Wishlist */}
+            <Link to="/wishlist" className="relative flex items-center justify-center w-8 h-8">
+              <FiHeart className="w-5 h-5 text-black/60 hover:text-black" />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-pink-400 text-white text-[9px] min-w-[14px] h-[14px] flex items-center justify-center rounded-full font-bold px-[3px]">
+                  {wishlist.length}
+                </span>
+              )}
+            </Link>
+
+            {/* Cart */}
+            <div className="relative" ref={miniCartRef}>
+              <button
+                onClick={() => setShowMiniCart((prev) => !prev)}
+                className="relative flex items-center justify-center w-8 h-8"
+              >
+                <FiShoppingCart className="w-5 h-5 text-black/60 hover:text-black" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-pink-400 text-white text-[9px] min-w-[14px] h-[14px] flex items-center justify-center rounded-full font-bold px-[3px]">
+                    {cartCount}
                   </span>
                 )}
-              </Link>
+              </button>
+              {showMiniCart && <CartCard onClose={() => setShowMiniCart(false)} />}
+            </div>
 
-              {/* Cart */}
-              <div className="relative" ref={miniCartRef}>
+            {/* Search */}
+            <div className="relative hidden md:flex items-center justify-center" ref={searchRef}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                background: searchOpen ? 'rgba(0,0,0,0.06)' : 'transparent',
+                padding: searchOpen ? '0.35rem 0.75rem' : '0',
+                transition: 'all 0.3s ease',
+                width: searchOpen ? '180px' : '2rem',
+                overflow: 'hidden',
+                borderRadius: '999px',
+              }}>
                 <button
-                  onClick={() => setShowMiniCart((prev) => !prev)}
-                  className="relativetransition-colors duration-200 nav-link-item"
+                  onClick={() => {
+                    if (searchOpen && query.trim()) {
+                      navigate(`/products?search=${encodeURIComponent(query)}`)
+                      setShowDropdown(false)
+                      setQuery('')
+                      setSearchOpen(false)
+                    } else {
+                      setSearchOpen(!searchOpen)
+                      setTimeout(() => searchInputRef.current?.focus(), 100)
+                    }
+                  }}
+                  className="flex items-center justify-center shrink-0"
                 >
-                  Cart
-                  {cartCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-pink-400 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
-                      {cartCount}
-                    </span>
-                  )}
+                  <FiSearch className="w-5 h-5 text-black/60 hover:text-black" />
                 </button>
-                {showMiniCart && <CartCard onClose={() => setShowMiniCart(false)} />}
-              </div>
 
-              {/* Search */}
-              <div className="relative hidden md:block " ref={searchRef}>
-                   <button onClick={handleSubmit}>
-                     <FiSearch className="text-black/50 hover:text-black text-base shrink-0" />
-                   </button>
-
-                {showDropdown && (
-                  <div className="absolute top-11 left-0 w-64 bg-black border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                    {loading && (
-                      <div className="flex items-center gap-2 p-4">
-                        <div className="w-3 h-3 rounded-full border-2 border-pink-400 border-t-transparent animate-spin" />
-                        <p className="nav-dm text-xs text-white/40">Searching...</p>
-                      </div>
-                    )}
-                    {!loading && results.length === 0 && (
-                      <div className="p-4 text-center">
-                        <p className="nav-dm text-xs text-white/30">No products found</p>
-                      </div>
-                    )}
-                    {!loading && results.map((product, i) => (
-                      <Link
-                        key={product._id}
-                        to={`/products/${product._id}`}
-                        className={`flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors duration-150 ${i !== results.length - 1 ? "border-b border-white/5" : ""}`}
-                        onClick={() => { setShowDropdown(false); setQuery("") }}
-                      >
-                        <img src={product.images[0]} alt={product.name} className="w-10 h-10 object-cover rounded-lg shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <p className="nav-dm text-white text-xs font-medium truncate">{product.name}</p>
-                          <p className="nav-bebas text-pink-400 text-xs mt-0.5 tracking-wide">KSh {product.price}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                {searchOpen && (
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search..."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && query.trim()) {
+                        navigate(`/products?search=${encodeURIComponent(query)}`)
+                        setShowDropdown(false)
+                        setQuery('')
+                        setSearchOpen(false)
+                      }
+                      if (e.key === 'Escape') {
+                        setSearchOpen(false)
+                        setQuery('')
+                      }
+                    }}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      outline: 'none',
+                      fontFamily: 'Montserrat, sans-serif',
+                      fontSize: '0.65rem',
+                      letterSpacing: '0.05em',
+                      color: '#191A23',
+                      width: '100%',
+                    }}
+                  />
                 )}
               </div>
 
-           
-
+              {/* Dropdown results */}
+              {showDropdown && results.length > 0 && (
+                <div className="absolute top-11 right-0 w-64 bg-black border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                  {loading && (
+                    <div className="flex items-center gap-2 p-4">
+                      <div className="w-3 h-3 rounded-full border-2 border-pink-400 border-t-transparent animate-spin" />
+                      <p className="text-xs text-white/40" style={{ fontFamily: 'Montserrat, sans-serif' }}>Searching...</p>
+                    </div>
+                  )}
+                  {!loading && results.length === 0 && (
+                    <div className="p-4 text-center">
+                      <p className="text-xs text-white/30" style={{ fontFamily: 'Montserrat, sans-serif' }}>No products found</p>
+                    </div>
+                  )}
+                  {!loading && results.map((product, i) => (
+                    <Link
+                      key={product._id}
+                      to={`/products/${product._id}`}
+                      className={`flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors duration-150 ${i !== results.length - 1 ? "border-b border-white/5" : ""}`}
+                      onClick={() => { setShowDropdown(false); setQuery(''); setSearchOpen(false) }}
+                    >
+                      <img src={product.images[0]} alt={product.name} className="w-10 h-10 object-cover rounded-lg shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-xs font-medium truncate" style={{ fontFamily: 'Montserrat, sans-serif' }}>{product.name}</p>
+                        <p className="text-pink-400 text-xs mt-0.5 tracking-wide">KSh {product.price}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
               {/* User */}
               <button
                 onClick={handleLoginClick}
@@ -302,7 +361,7 @@ function Navbar() {
                 />
               </form>
 
-              {[{ to: "/", label: "Home" }, { to: "/products", label: "Products" }, { to: "/stats", label: "Stats" }].map(({ to, label }) => (
+              {[{ to: "/", label: "Home" }, { to: "/products", label: "Products" }].map(({ to, label }) => (
                 <Link key={to} onClick={() => setIsOpen(false)} to={to}
                   className="nav-dm text-black/50 hover:text-black text-xs tracking-widest uppercase transition-colors">
                   {label}

@@ -77,53 +77,6 @@ const CartPage = () => {
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400&display=swap');`}</style>
 
       {/* Header */}
-      {/* Hero header */}
-      <div style={{
-        background: '#FFF7FF',
-        padding: '8.5rem 2.5rem 1.5rem',
-        position: 'relative',
-        overflow: 'hidden',
-        borderBottom: '1px solid rgba(0,0,0,0.06)',
-      }}>
-        {/* Decorative circles */}
-        <div style={{ position: 'absolute', top: '-4rem', right: '-4rem', width: '20rem', height: '20rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.2)' }} ></div>
-        <div style={{ position: 'absolute', bottom: '-6rem', left: '10rem', width: '25rem', height: '25rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.2)' }} ></div>
-
-        <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <p style={{
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.6rem',
-            letterSpacing: '0.4em',
-            textTransform: 'uppercase',
-            color: '#191A23',
-            marginBottom: '1rem',
-          }}>
-            Purchase Items
-          </p>
-
-          <h1 style={{
-            fontFamily: '"Cormorant Garamond", serif',
-            fontSize: 'clamp(3.5rem, 8vw, 5rem)',
-            fontWeight: 300,
-            color: '#191A23',
-            lineHeight: 1,
-            letterSpacing: '0.05em',
-            marginBottom: '1.5rem',
-          }}>
-            Cart
-          </h1>
-
-          <p style={{
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.65rem',
-            letterSpacing: '0.2em',
-            color: 'rgba(0,0,0,0.4)',
-            textTransform: 'uppercase',
-          }}>
-            {cart.items.length} item{cart.items.length !== 1 ? 's' : ''}
-          </p>
-        </div>
-      </div>
       <Breadcrumb crumbs={[{ to: '/', label: 'Home' }, { label: 'Cart' }]} />
 
       {/* Body */}

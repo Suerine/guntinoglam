@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react"
+import React, { useEffect, useState, useContext, useMemo } from "react"
 import { useParams, Link } from "react-router-dom"
 import API from "../../api/axios"
 import ProductCard from "./ProductCard"
@@ -7,6 +7,7 @@ import { getWhatsAppLink } from "../../utils/helper"
 import { FaWhatsapp } from "react-icons/fa"
 import { FiShoppingCart, FiChevronRight, FiHeart, FiStar } from "react-icons/fi"
 import { WishlistContext } from "../../context/WishlistContext"
+import ShippingInfoDropdown from "../Shop/ShippingInformation"
 
 const ProductPage = () => {
   const { id } = useParams()
@@ -30,7 +31,7 @@ const ProductPage = () => {
         setSelectedImage(res.data.images?.[0])
         setSelectedColor(res.data.colors?.[0] || null)
         setSelectedSize(res.data.sizes?.[0]?.size || null)
-        const related = await API.get(`/api/products?category=${res.data.category}&limit=4`)
+        const related = await API.get(`/api/products?category=${res.data.category}&limit=20`)
         setRelatedProducts(related.data.products || [])
       } catch (error) {
         console.error(error)
@@ -48,6 +49,24 @@ const ProductPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [id])
+
+  const shuffledProducts = useMemo(() => {
+  const filteredProducts = relatedProducts.filter(
+    (item) => item._id !== product?._id
+  )
+
+  // Fisher-Yates shuffle
+  for (let i = filteredProducts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+
+    ;[filteredProducts[i], filteredProducts[j]] = [
+      filteredProducts[j],
+      filteredProducts[i],
+    ]
+  }
+
+  return filteredProducts.slice(0, 4)
+}, [relatedProducts, product])
 
   if (!product) return (
     <div className="min-h-screen bg-[#FFF7FF] flex items-center justify-center">
@@ -74,8 +93,8 @@ const ProductPage = () => {
 
 
       {/* Breadcrumb */}
-      <div className="border-b border-gray-200 px-4 sm:px-6 lg:px-10 py-6 mb-8" style={{ paddingTop: '6.5rem' }}>
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs prod-dm text-gray-500 font-medium">
+      <div className="border-b border-gray-200 px-4 sm:px-6 lg:px-10 py-4 mb-8" style={{ paddingTop: '5.5rem' }}>
+        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs font-montserrat uppercase text-gray-500 font-medium">
           <Link to="/" className="hover:text-black transition-colors">Home</Link>
           <FiChevronRight className="text-gray-300 w-4 h-4" />
           <Link to="/products" className="hover:text-black transition-colors">Products</Link>
@@ -291,6 +310,9 @@ const ProductPage = () => {
             {/* Divider */}
             <div className="h-px bg-gray-200" />
 
+            {/* Shipping info */}
+            <ShippingInfoDropdown />
+
             {/* CTAs */}
             <div className="space-y-3 pt-4">
               <button
@@ -385,28 +407,32 @@ const ProductPage = () => {
 
         {/* Related products */}
         {relatedProducts.length > 0 && (
-          <div className="mb-20">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <h2 className="font-playfair text-3xl sm:text-4xl text-black">You May Also Like</h2>
-                <div className="hidden sm:block h-px w-16 bg-gray-200" />
-              </div>
-              <Link
-                to="/products"
-                className="prod-dm text-xs tracking-widest uppercase text-gray-500 hover:text-black transition-colors flex items-center gap-1 font-medium"
-              >
-                View All <FiChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {relatedProducts.map((item) => (
-                <Link key={item._id} to={`/products/${item._id}`}>
-                  <ProductCard product={item} />
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+         <div className="mb-20">
+           <div className="flex items-center justify-between mb-8">
+             <div className="flex items-center gap-4">
+               <h2 className="font-playfair text-3xl sm:text-4xl text-black">
+                 You May Also Like
+               </h2>
+               <div className="hidden sm:block h-px w-16 bg-gray-200" />
+             </div>
+
+             <Link
+               to="/products"
+               className="prod-dm text-xs tracking-widest uppercase text-gray-500 hover:text-black transition-colors flex items-center gap-1 font-medium"
+             >
+               View All <FiChevronRight className="w-4 h-4" />
+             </Link>
+           </div>
+
+           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+             {shuffledProducts.map((item) => (
+               <Link key={item._id} to={`/products/${item._id}`}>
+                 <ProductCard product={item} />
+               </Link>
+             ))}
+           </div>
+         </div>
+       )}
 
       </div>
     </div>

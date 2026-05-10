@@ -123,8 +123,6 @@ const CheckoutPage = () => {
   return (
     <div style={{ minHeight: '100vh', background: '#FFF7FF' }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400;500&display=swap'); .checkout-input:focus { border-bottom-color: rgba(0,0,0,0.5) !important; }`}</style>
-
-      <CheckoutHeader step={step} />
       <Breadcrumb crumbs={[{ to: '/', label: 'Home' }, { to: '/cart', label: 'Cart' }, { label: 'Checkout' }]} />
 
 

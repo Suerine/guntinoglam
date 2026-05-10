@@ -253,7 +253,7 @@ function AuthPage() {
           {/* Switch */}
           <p style={{
             fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.6rem',
+            fontSize: '0.8rem',
             letterSpacing: '0.05em',
             color: 'rgba(0,0,0,0.35)',
             textAlign: 'center',
@@ -267,7 +267,7 @@ function AuthPage() {
                 border: 'none',
                 cursor: 'pointer',
                 fontFamily: 'Montserrat, sans-serif',
-                fontSize: '0.6rem',
+                fontSize: '0.8rem',
                 letterSpacing: '0.05em',
                 color: '#191A23',
                 textDecoration: 'underline',

@@ -4,6 +4,7 @@ import { CartContext } from "../../context/CartContext"
 import { Link } from "react-router-dom"
 import { FiHeart } from "react-icons/fi"
 import ProductCard from "../Products/ProductCard"
+import Breadcrumb from "../../components/ui/Breadcrumb"
 
 function Wishlist() {
   const { wishlist, removeFromWishlist, loading } = useContext(WishlistContext)
@@ -129,57 +130,10 @@ function Wishlist() {
   return (
     <div style={{ minHeight: '100vh', background: '#FFF7FF' }}>
       {styles}
-
-      {/* Hero header */}
-      <div style={{
-        background: '#FFF7FF',
-        padding: '8.5rem 2.5rem 1.5rem',
-        position: 'relative',
-        overflow: 'hidden',
-        borderBottom: '1px solid rgba(0,0,0,0.06)',
-      }}>
-        {/* Decorative circles */}
-        <div style={{ position: 'absolute', top: '-4rem', right: '-4rem', width: '20rem', height: '20rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.2)' }} ></div>
-        <div style={{ position: 'absolute', bottom: '-6rem', left: '10rem', width: '25rem', height: '25rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.2)' }} ></div>
-
-        <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <p style={{
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.6rem',
-            letterSpacing: '0.4em',
-            textTransform: 'uppercase',
-            color: '#191A23',
-            marginBottom: '1rem',
-          }}>
-            Saved Items
-          </p>
-
-          <h1 style={{
-            fontFamily: '"Cormorant Garamond", serif',
-            fontSize: 'clamp(3.5rem, 8vw, 5rem)',
-            fontWeight: 300,
-            color: '#191A23',
-            lineHeight: 1,
-            letterSpacing: '0.05em',
-            marginBottom: '1.5rem',
-          }}>
-            Wishlist
-          </h1>
-
-          <p style={{
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.65rem',
-            letterSpacing: '0.2em',
-            color: 'rgba(0,0,0,0.4)',
-            textTransform: 'uppercase',
-          }}>
-            {wishlist.length} item{wishlist.length !== 1 ? 's' : ''}
-          </p>
-        </div>
-      </div>
+      <Breadcrumb crumbs={[{ to: '/', label: 'Home' }, { label: 'Wishlist' }]} />
 
       {/* Body */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto', paddingBottom: '4rem',}}>
         {/* Product grid */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-1">
           {wishlist.map((product) => (
@@ -191,7 +145,7 @@ function Wishlist() {
 
         {/* Continue shopping */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3.5rem', marginBottom: '2rem' }}>
-          <Link className="bg-pink-300 hover:bg-pink-400 text-sm hover:text-black text-white  transition-colors"
+          <Link className="bg-black/90 hover:bg-black text-sm hover:text-black text-white  transition-colors"
             to="/products"
             style={{
               fontFamily: 'Montserrat, sans-serif',

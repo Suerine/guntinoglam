@@ -1,8 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 const About = ({ isMobile }) => {
   return (
+   <>
+   <Helmet>
+        <title>About Us | Guntino Glam</title>
+        <meta name="description" content="Guntino Glam is a Nairobi-based fashion brand celebrating Somali dress. We sell and rent Dirac for weddings — Guntino, Maqbal, Faransawi and more." />
+        <meta property="og:title" content="About Us | Guntino Glam" />
+        <meta property="og:description" content="Rooted in heritage, dressed for today. Curated Dirac collections for the modern Somali woman." />
+        <meta property="og:url" content="https://guntinoglam.vercel.app/about" />
+        <meta name="keywords" content="Luxury,Dirac, Somali fashion, Guntino, Maqbal, Faransawi, Nairobi, wedding dress, Somali wedding" />
+      </Helmet>
     <section
       style={{
         width: '100vw',
@@ -24,7 +34,7 @@ const About = ({ isMobile }) => {
       `}</style>
 
       {/* Ghost watermark */}
-      <p style={{
+      <h1 style={{
         position: 'absolute',
         bottom: '-2rem',
         left: '-1rem',
@@ -39,7 +49,7 @@ const About = ({ isMobile }) => {
         textTransform: 'uppercase',
       }}>
         Guntino Glam
-      </p>
+      </h1>
 
       {/* Decorative circles */}
       <div style={{ position: 'absolute', top: '-8rem', right: '-8rem', width: '32rem', height: '32rem', borderRadius: '50%', border: '1px solid rgba(0,0,0,0.05)', pointerEvents: 'none' }} />
@@ -51,7 +61,7 @@ const About = ({ isMobile }) => {
         zIndex: 1,
         width: '100%',
         maxWidth: '1200px',
-        padding: isMobile ? '0 1.5rem' : '0 2.5rem',
+        padding: isMobile ? '3rem 1.5rem 0rem' : '0 2.5rem',
         display: 'grid',
         gridTemplateColumns: isMobile ? '1fr' : '1fr 1px 1fr',
         gap: isMobile ? '1.5rem' : '4rem',
@@ -71,7 +81,7 @@ const About = ({ isMobile }) => {
             Who we are
           </p>
 
-          <h1 style={{
+          <h2 style={{
             fontFamily: '"Cormorant Garamond", serif',
             fontSize: isMobile ? '2.5rem' : 'clamp(2.8rem, 6vw, 5.5rem)',
             fontWeight: 300,
@@ -83,7 +93,7 @@ const About = ({ isMobile }) => {
             Rooted in<br />
             heritage.<br />
             <em style={{ color: 'rgba(0,0,0,0.35)' }}>Dressed for today.</em>
-          </h1>
+          </h2>
         </div>
 
         {/* Divider — desktop only */}
@@ -153,6 +163,7 @@ const About = ({ isMobile }) => {
 
       </div>
     </section>
+    </>
   )
 }
 

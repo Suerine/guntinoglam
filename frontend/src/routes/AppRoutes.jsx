@@ -10,13 +10,21 @@ import Cart from "../pages/Shop/Cart";
 import ProductPage from "../pages/Products/ProductPage";
 import Wishlist from "../pages/Shop/Wishlist";
 import AuthPage from "../pages/Auth/AuthPage";
-// import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+// Info pages
+import OrderInformation from "../pages/Info/OrderInformation";
+import ShippingReturns from "../pages/Info/ShippingReturns";
+import RefundPolicy from "../pages/Info/RefundPolicy";
+import TermsOfService from "../pages/Info/TermsOfService";
 
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Home — no Layout, it has its own Navbar + snap scroll */}
       <Route path="/" element={<Home />} />
+
+      {/* Admin — no Layout, it has its own sidebar */}
+      <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
 
       {/* All other routes — wrapped in Layout */}
       <Route element={<Layout />}>
@@ -28,7 +36,10 @@ const AppRoutes = () => {
         <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/wishlist" element={<Wishlist />} />
-        {/* <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} /> */}
+        <Route path="/order-information" element={<ProtectedRoute><OrderInformation /></ProtectedRoute>} />
+        <Route path="/shipping-returns" element={<ProtectedRoute><ShippingReturns /></ProtectedRoute>} />
+        <Route path="/refund-policy" element={<ProtectedRoute><RefundPolicy /></ProtectedRoute>} />
+        <Route path="/terms-of-service" element={<ProtectedRoute><TermsOfService /></ProtectedRoute>} />
       </Route>
     </Routes>
   );

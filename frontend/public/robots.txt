@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://guntinoglam.vercel.app/sitemap.xml

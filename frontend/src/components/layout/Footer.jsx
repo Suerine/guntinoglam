@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Guntino_Logo from "../../assets/images/GuntinoGlam.jpg"
+import ModelsButton from '../ui/ModelsButton'
 
 const Footer = () => {
 
@@ -7,6 +8,13 @@ const Footer = () => {
    { label: 'Instagram', url: 'https://www.instagram.com/guntino_glam/' },
    { label: 'TikTok', url: 'https://www.tiktok.com/@guntino_glam' },
    ]
+
+   const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      })
+    }
   return (
     <footer style={{
        background: '#FFF7FF',
@@ -76,7 +84,7 @@ const Footer = () => {
       `}</style>
 
       {/* Top — logo + columns */}
-      <div className="footer-grid" style={{ display: 'flex', gap: '4rem', alignItems: 'flex-start' }}>
+      <div className="footer-grid pt-24 md:pt-5" style={{ display: 'flex', gap: '4rem', alignItems: 'flex-start' }}>
 
         {/* Brand col */}
         <div style={{ flex: 2 }}>
@@ -87,9 +95,12 @@ const Footer = () => {
             color: 'rgba(0,0,0,0.7)',
             lineHeight: 1.8,
             maxWidth: '26ch',
+            marginBottom: '2rem',
           }}>
             Tradition draped in glamour. Handcrafted pieces for the modern Somali woman.
           </p>
+          <ModelsButton />
+  
         </div>
 
         {/* Navigation col */}
@@ -104,10 +115,10 @@ const Footer = () => {
           }}>
             collection
           </p>
-          <Link to="/products" className="footer-link">Maqbal</Link>
-          <Link to="/products" className="footer-link">Stones</Link>
-          <Link to="/products" className="footer-link">Faransawi</Link>
-          <Link to="/products" className="footer-link">Guntino</Link>
+          <Link to="/products" className="footer-link" onClick={scrollToTop}>Maqbal</Link>
+          <Link to="/products" className="footer-link" onClick={scrollToTop}>Stones</Link>
+          <Link to="/products" className="footer-link" onClick={scrollToTop}>Faransawi</Link>
+          <Link to="/products" className="footer-link" onClick={scrollToTop}>Guntino</Link>
         </div>
 
         {/* Info col */}
@@ -122,10 +133,10 @@ const Footer = () => {
           }}>
             Info
           </p>
-          <Link to="/" className="footer-link">About</Link>
-          <Link to="/" className="footer-link">Stockists</Link>
-          <Link to="/" className="footer-link">Care Guide</Link>
-          <Link to="/" className="footer-link">Contact</Link>
+          <Link to="/order-information" className="footer-link" onClick={scrollToTop}>Order Information</Link>
+          <Link to="/shipping-returns" className="footer-link" onClick={scrollToTop}>Shipping & Returns</Link>
+          <Link to="/refund-policy" className="footer-link" onClick={scrollToTop}>Refund Policy</Link>
+          <Link to="/terms-of-service" className="footer-link" onClick={scrollToTop}>Terms of Service</Link>
         </div>
 
         {/* Newsletter col */}
