@@ -22,7 +22,7 @@ const ShippingReturns = () => {
 
         <p className="max-w-2xl mx-auto text-gray-600 text-sm sm:text-base leading-relaxed">
           We are committed to making your shopping experience smooth,
-          transparent, and worry-free from checkout to delivery.
+          transparent, and worry-free from checkout to delivery. For more information, please contact our customer support team on <a href="mailto:artbynajmaa@gmail.com?subject=Order%20Inquiry" className="text-pink-500 underline">artbynajmaa@gmail.com</a> or call us at <a href="tel:+254793904535" className="text-pink-500 underline">+254 793 904 535</a>.
         </p>
       </div>
 

@@ -115,7 +115,7 @@ const About = ({ isMobile }) => {
             color: 'rgba(0,0,0,0.5)',
             marginBottom: '1rem',
           }}>
-            "We started Guntino Glam to celebrate Somali dress — not as a relic of the past, but as a living, breathing art form."
+            "We wanted to create a space where people can proudly wear and celebrate beautiful dirac, guntino and cultural fashion without feeling limited to one option."
           </p>
 
             <p style={{
@@ -126,7 +126,7 @@ const About = ({ isMobile }) => {
               color: 'rgba(0,0,0,0.4)',
               marginBottom: '2rem',
             }}>
-              Based in Nairobi, we sell and rent Dirac made for weddings. With collections such as Guntino, Maqbal and Faransawi, our pieces are curated for the modern Somali woman. Each piece is selected for its craftsmanship, story, and ability to make you feel like yourself — only more so.
+             Guntino Glam was created out of love for our hido iyo dhaqankeena Soomaaliyeed. We noticed how people spend so much on beautiful dirac, guntiino, and cultural outfits, wear them once at aroos or special events, then leave them hanging in the closet or sell them away. That’s how Guntino Glam was born, a space where people can both rent and buy elegant cultural wear while still celebrating our Soomaalinimo, traditions, and timeless beauty in a modern and affordable way. 
             </p>
 
           <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', marginTop: isMobile ? '1rem' : '0' }}>
@@ -151,7 +151,7 @@ const About = ({ isMobile }) => {
 
             <p style={{
               fontFamily: 'Montserrat, sans-serif',
-              fontSize: '0.55rem',
+              fontSize: '0.75rem',
               letterSpacing: '0.15em',
               color: 'rgba(0,0,0,0.25)',
               textTransform: 'uppercase',

@@ -93,7 +93,7 @@ const TopCollection = ({ isMobile }) => {
          </p>
 
         <Link
-          to="/products"
+          to="/products?collection=Stones"
           style={{
             display: 'inline-flex',
             alignItems: 'center',

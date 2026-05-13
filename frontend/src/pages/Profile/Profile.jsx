@@ -51,7 +51,7 @@ function ProfilePage() {
       `}</style>
 
       {/* Hero banner */}
-      <div className="bg-[#FFF7FF] text-[#191A23] px-4 sm:px-6 lg:px-10 py-16 sm:py-24 relative overflow-hidden mb-12 sm:mb-16 border-b border-gray-200">
+      <div className="bg-[#FFF7FF] text-[#191A23] px-4 sm:px-6 lg:px-10 py-7 sm:py-24 relative overflow-hidden mb-4 sm:mb-8 border-b border-gray-200">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-pink-500/10 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-pink-500/5 to-transparent rounded-full blur-3xl" />
@@ -91,7 +91,7 @@ function ProfilePage() {
                 to={to}
                 className="group bg-white rounded-xl p-6 sm:p-8 border-2 border-gray-100 hover:border-pink-300 transition-all duration-300 hover:shadow-lg"
               >
-                <div className="w-12 h-12 rounded-full bg-black/5 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-all duration-300 mb-4">
+                <div className="w-12 h-12 rounded-full bg-black/5 group-hover:bg-pink-400 group-hover:text-white flex items-center justify-center transition-all duration-300 mb-4">
                   <Icon className="w-6 h-6" />
                 </div>
                 <h3 className="font-playfair font-bold text-lg text-black mb-1">{label}</h3>

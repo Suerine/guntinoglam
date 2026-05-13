@@ -172,12 +172,14 @@ function Navbar() {
           <div className="flex items-center justify-between">
 
              {/* Desktop nav links — left */}
-           <ul className="hidden md:flex gap-8 lg:gap-10 flex-1">
+           <ul className="hidden md:flex gap-4 lg:gap-6 flex-1">
             {[
               { to: "/products?collection=Maqbal", label: "Maqbal" },
               { to: "/products?collection=Stones", label: "Stones" },
               { to: "/products?collection=Faransawi", label: "Faransawi" },
               { to: "/products?collection=Guntino", label: "Guntino" },
+              { to: "/products?collection=Baati", label: "Baati" },
+              { to: "/products?collection=Hido Iyo Dhaqan", label: "Hido Iyo Dhaqan" },
             ].map(({ to, label }) => (
               <li key={label}>
                 <Link to={to} className="nav-link-item">{label}</Link>

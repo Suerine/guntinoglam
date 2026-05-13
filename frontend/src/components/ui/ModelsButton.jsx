@@ -81,16 +81,13 @@ const ModelsButton = () => {
              </h2>
 
              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-6">
-               We are looking for confident, stylish, and elegant women
-               to feature in our upcoming Guntino Glam collection.
-               Send us your photos, social media handles, and a short
-               introduction through WhatsApp or email.
+               Join Guntino Glam as a model and be part of our creative fashion campaigns and photoshoots. We’re looking for confident, stylish individuals who love fashion and representing elegance.
              </p>
 
              {/* Buttons */}
              <div className="space-y-4">
                <a
-                 href="https://wa.me/254700000000?text=Hello%20Guntino%20Glam,%20I%20am%20interested%20in%20modeling%20for%20your%20next%20collection."
+                 href="https://wa.me/254793904535?text=Hello%20Guntino%20Glam,%20I%20am%20interested%20in%20modeling%20for%20your%20next%20collection."
                  target="_blank"
                  rel="noopener noreferrer"
                  className="
@@ -108,7 +105,7 @@ const ModelsButton = () => {
                </a>
 
                <a
-                 href="mailto:guntinoglam@gmail.com?subject=Model%20Application"
+                 href="mailto:artbynajmaa@gmail.com?subject=Model%20Application"
                  className="
                    w-full flex items-center justify-center gap-3
                    bg-black

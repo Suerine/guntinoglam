@@ -4,7 +4,7 @@ import toast from "react-hot-toast"
 import API from "../../api/axios"
 
 const CATEGORIES = ["Jerseys", "Boots", "Balls"]
-const COLLECTIONS = ["Maqbal", "Stones", "Faransawi", "Guntino"]
+const COLLECTIONS = ["Maqbal", "Stones", "Faransawi", "Guntino", "Baati", "Hido Iyo Dhaqan"]
 
 const labelStyle = {
   fontFamily: 'Montserrat, sans-serif',
@@ -37,8 +37,8 @@ const ProductModal = ({ product, onClose, onSave }) => {
     price: product?.price || "",
     originalPrice: product?.originalPrice || "",
     discount: product?.discount || 0,
-    category: product?.category || "Jerseys",
-    collection: product?.collection || "Maqbal",
+    category: product?.category || "Dirac",
+    collection: product?.collection || "Guntino",
     images: product?.images || [],
     colors: product?.colors?.join(", ") || "",
     tags: product?.tags?.join(", ") || "",

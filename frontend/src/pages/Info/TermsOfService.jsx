@@ -22,7 +22,7 @@ const TermsOfService = () => {
 
         <p className="max-w-2xl mx-auto text-gray-600 text-sm sm:text-base leading-relaxed">
           Please read these terms carefully before using our website or placing
-          an order. By accessing our services, you agree to these terms.
+          an order. By accessing our services, you agree to these terms. For more information, please contact our customer support team on <a href="mailto:artbynajmaa@gmail.com?subject=Order%20Inquiry" className="text-pink-500 underline">artbynajmaa@gmail.com</a> or call us at <a href="tel:+254793904535" className="text-pink-500 underline">+254 793 904 535</a>.
         </p>
       </div>
 

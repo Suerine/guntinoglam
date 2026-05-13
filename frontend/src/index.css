@@ -24,4 +24,17 @@ h1, h2, h3, h4, h5, h6 {
 .nav-link-item:hover { color: black; }
 .nav-link-item:hover::after { width: 100%; }
 
+ .collection-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+@media (min-width: 768px) {
+  .collection-img {
+    height: 800px;
+    object-fit: cover;
+  }
+}
+
 

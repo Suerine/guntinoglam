@@ -11,7 +11,14 @@ const productSchema = new mongoose.Schema(
     category: { type: String, required: true, trim: true },
     collection: {
       type: String,
-      enum: ["Maqbal", "Stones", "Faransawi", "Guntino"],
+      enum: [
+        "Maqbal",
+        "Stones",
+        "Faransawi",
+        "Guntino",
+        "Baati",
+        "Hido Iyo Dhaqan",
+      ],
       required: true,
     },
 

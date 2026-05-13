@@ -133,7 +133,16 @@ export const getProductsBycollection = async (req, res) => {
     const { collection } = req.params;
     const limit = Number(req.query.limit) || 20;
 
-    if (!["Maqbal", "Stones", "Faransawi", "Guntino"].includes(collection)) {
+    if (
+      ![
+        "Maqbal",
+        "Stones",
+        "Faransawi",
+        "Guntino",
+        "Baati",
+        "Hido Iyo Dhaqan",
+      ].includes(collection)
+    ) {
       return res.status(400).json({ message: "Invalid collection" });
     }
 

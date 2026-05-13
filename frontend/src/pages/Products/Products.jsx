@@ -8,10 +8,22 @@ import Navbar from "../../components/layout/Navbar"
 import FilterDrawer from "../../components/ui/FilterDrawer"
 import { FilterTrigger } from "../../components/ui/FilterDrawer"
 import { Helmet } from 'react-helmet-async'
+import StonesGroupPic from "../../assets/images/1S0A6496.jpg"
+import MaqbalGroupPic from "../../assets/images/HeroImg5.jpg"
+import FaransawiGroupPic from "../../assets/images/1S0A6274.jpeg"
+import GuntinoGroupPic from "../../assets/images/1S0A6647.jpeg"
 
 
 const CATEGORIES = ["All", "Dirac"]
-const COLLECTIONS = ["All", "Maqbal", "Stones", "Faransawi", "Guntino", "Baati", "Traditional"]
+const COLLECTIONS = ["All", "Maqbal", "Stones", "Faransawi", "Guntino", "Baati", "Hido Iyo Dhaqan"]
+const COLLECTION_IMAGES = {
+  Maqbal: MaqbalGroupPic,
+  Stones: StonesGroupPic,
+  Faransawi: FaransawiGroupPic,
+  Guntino: GuntinoGroupPic,
+  Baati: "/images/collections/baati-banner.jpg",
+  "Hido Iyo Dhaqan": "/images/collections/hido-banner.jpg",
+}
 const PRODUCTS_PER_PAGE = 12 // 3 cols × 4 rows
 
 function Products() {
@@ -303,6 +315,37 @@ function Products() {
         )}
 
       </div>
+      {/* Collection Banner */}
+       {collection !== "All" && COLLECTION_IMAGES[collection] && (
+        <div className="max-w-[1500px] mx-0 p-0 md:p-4">
+          <div style={{ position: 'relative', overflow: 'hidden' }}>
+            <img
+              src={COLLECTION_IMAGES[collection]}
+              alt={`${collection} collection`}
+              className="collection-img"
+            />
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              padding: '1rem',
+            }}>
+              <h2 style={{
+                fontFamily: '"Cormorant Garamond", serif',
+                fontSize: '3.5rem',
+                fontWeight: 300,
+                color: 'rgba(255,255,255,0.35)',
+                letterSpacing: '0.1em',
+                margin: 0,
+              }}>
+                {collection}
+              </h2>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
    </>
   )

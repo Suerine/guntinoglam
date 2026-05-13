@@ -115,10 +115,12 @@ const Footer = () => {
           }}>
             collection
           </p>
-          <Link to="/products" className="footer-link" onClick={scrollToTop}>Maqbal</Link>
-          <Link to="/products" className="footer-link" onClick={scrollToTop}>Stones</Link>
-          <Link to="/products" className="footer-link" onClick={scrollToTop}>Faransawi</Link>
-          <Link to="/products" className="footer-link" onClick={scrollToTop}>Guntino</Link>
+          <Link to="/products?collection=Maqbal" className="footer-link" onClick={scrollToTop}>Maqbal</Link>
+          <Link to="/products?collection=Stones" className="footer-link" onClick={scrollToTop}>Stones</Link>
+          <Link to="/products?collection=Faransawi" className="footer-link" onClick={scrollToTop}>Faransawi</Link>
+          <Link to="/products?collection=Guntino" className="footer-link" onClick={scrollToTop}>Guntino</Link>
+          <Link to="/products?collection=Baati" className="footer-link" onClick={scrollToTop}>Baati</Link>
+          <Link to="/products?collection=Hido Iyo Dhaqan" className="footer-link" onClick={scrollToTop}>Hido Iyo Dhaqan</Link>
         </div>
 
         {/* Info col */}
@@ -186,10 +188,14 @@ const Footer = () => {
           letterSpacing: '0.2em',
           color: 'rgba(0,0,0,0.35)',
           marginTop: '0.75rem',
+          marginBottom: '0.2rem',
           textTransform: 'uppercase',
         }}>
           We sell and rent dirac · Ships worldwide
         </h4>
+        <h5 style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '0.8rem', color: 'rgba(0,0,0,0.35)',textTransform: 'uppercase' }}>
+          For more information, please contact our customer support team on <a href="mailto:artbynajmaa@gmail.com?subject=Order%20Inquiry" className="text-pink-500 underline">artbynajmaa@gmail.com</a> or call us at <a href="tel:+254793904535" className="text-pink-500 underline">+254 793 904 535</a>.
+        </h5>
       </div>
 
       {/* Bottom bar */}

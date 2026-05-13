@@ -1,21 +1,24 @@
 import { useState, useContext } from "react"
 import { CartContext } from "../../context/CartContext"
 import { AuthContext } from "../../context/AuthContext"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import API from "../../api/axios"
 import CheckoutHeader from "../../components/ui/CheckoutHeader"
 import Breadcrumb from "../../components/ui/Breadcrumb"
 import ShippingForm from "../../components/ui/ShippingForm"
-import PaymentForm from "../../components/ui/PaymentForm"
 import OrderSummary from "../../components/ui/OrderSummary"
+import PaystackPayment from "./PaystackPayment"
+
 
 const CheckoutPage = () => {
-  const { cart } = useContext(CartContext)
+  const { cart, clearCart } = useContext(CartContext)
   const { user } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const [step, setStep] = useState(1)
   const [paymentLoading, setPaymentLoading] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState(null)
+  const [paymentError, setPaymentError] = useState(null)
   const [mpesaPhone, setMpesaPhone] = useState("")
   const [polling, setPolling] = useState(false)
   const [shipping, setShipping] = useState({
@@ -25,7 +28,7 @@ const CheckoutPage = () => {
   const normalizeItem = (item) => {
     const isPopulated = item.product && typeof item.product === "object"
     if (!isPopulated) return null
-    return { id: item._id, name: item.product.name, image: item.product.images?.[0], size: item.size, price: item.price, quantity: item.quantity }
+    return { id: item.product._id, name: item.product.name, image: item.product.images?.[0], size: item.size, price: item.price, quantity: item.quantity }
   }
 
   const items = (cart?.items || []).map(normalizeItem).filter(Boolean)
@@ -129,8 +132,155 @@ const CheckoutPage = () => {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '3rem 2rem' }}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           <div className="lg:col-span-2" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {/* Success Message */}
+            {paymentStatus === 'success' && (
+              <div style={{
+                background: '#E8F5E9',
+                border: '1px solid #4CAF50',
+                borderRadius: '8px',
+                padding: '1.5rem',
+                textAlign: 'center',
+              }}>
+                <div style={{
+                  width: '50px',
+                  height: '50px',
+                  background: '#4CAF50',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1rem',
+                }}>
+                  <span style={{ color: '#fff', fontSize: '1.5rem' }}>✓</span>
+                </div>
+                <h3 style={{
+                  fontFamily: '"Cormorant Garamond", serif',
+                  fontSize: '1.75rem',
+                  fontWeight: 300,
+                  color: '#2E7D32',
+                  marginBottom: '0.5rem',
+                }}>
+                  Payment Successful!
+                </h3>
+                <p style={{
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontSize: '0.85rem',
+                  color: '#2E7D32',
+                  marginBottom: '1rem',
+                }}>
+                  Your order has been confirmed. Redirecting to orders page...
+                </p>
+              </div>
+            )}
+
+            {/* Failed Message */}
+            {paymentStatus === 'failed' && (
+              <div style={{
+                background: '#FFEBEE',
+                border: '1px solid #F44336',
+                borderRadius: '8px',
+                padding: '1.5rem',
+                textAlign: 'center',
+              }}>
+                <h3 style={{
+                  fontFamily: '"Cormorant Garamond", serif',
+                  fontSize: '1.75rem',
+                  fontWeight: 300,
+                  color: '#C62828',
+                  marginBottom: '0.5rem',
+                }}>
+                  Payment Failed
+                </h3>
+                <p style={{
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontSize: '0.85rem',
+                  color: '#C62828',
+                  marginBottom: '1rem',
+                }}>
+                  {paymentError || 'Something went wrong. Please try again or contact support.'}
+                </p>
+                <button
+                  onClick={() => {
+                    setPaymentStatus(null)
+                    setPaymentError(null)
+                  }}
+                  style={{
+                    fontFamily: 'Montserrat, sans-serif',
+                    fontSize: '0.65rem',
+                    letterSpacing: '0.3em',
+                    textTransform: 'uppercase',
+                    color: '#fff',
+                    background: '#F44336',
+                    border: 'none',
+                    padding: '0.75rem 1.5rem',
+                    cursor: 'pointer',
+                    borderRadius: '4px',
+                  }}
+                >
+                  Try Again
+                </button>
+              </div>
+            )}
+
             <ShippingForm step={step} shipping={shipping} setShipping={setShipping} onSubmit={handleShippingSubmit} />
-            <PaymentForm step={step} total={total} mpesaPhone={mpesaPhone} setMpesaPhone={setMpesaPhone} paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} paymentLoading={paymentLoading} polling={polling} onSubmit={handleMpesaPayment} />
+            {!paymentStatus && (
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '0.5rem 0' }}>
+                 <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.35)' }}>
+                   Amount to pay
+                 </p>
+                 <p style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2rem', fontWeight: 300, color: '#191A23' }}>
+                   KSh {total.toLocaleString()}
+                 </p>
+               </div>
+
+               <PaystackPayment
+                 email={user?.email}
+                 amount={total}
+                 metadata={{ shipping, items: items.map(i => ({ name: i.name, quantity: i.quantity })) }}
+                 onSuccess={async (response) => {
+                   setPaymentStatus('pending')
+                   setPaymentError(null)
+                   try {
+                     console.log('Payment response:', response)
+                     const res = await API.post('/api/payments/paystack/create-order', {
+                       reference: response.reference,
+                       items: items.map(item => ({
+                         product: item.id,
+                         name: item.name,
+                         image: item.image,
+                         size: item.size,
+                         quantity: item.quantity,
+                         price: item.price,
+                       })),
+                       shipping: {
+                         address: shipping.address,
+                         city: shipping.city,
+                         postalCode: shipping.county,
+                         country: 'Kenya',
+                       },
+                       itemsPrice: subtotal,
+                       shippingPrice: shipping_fee,
+                       totalPrice: total,
+                     })
+                     console.log('Order created:', res.data)
+                     setPaymentStatus('success')
+                     // Clear cart and redirect to orders page
+                     await clearCart()
+                     const orderId = res.data?.order?._id
+                     setTimeout(() => {
+                       navigate(`/orders?success=true${orderId ? `&orderId=${orderId}` : ''}`)
+                     }, 1500)
+                   } catch (err) {
+                     console.error('Order creation error:', err.response?.data || err.message)
+                     setPaymentError(err.response?.data?.message || err.message || 'Failed to create order')
+                     setPaymentStatus('failed')
+                   }
+                 }}
+                 onClose={() => console.log('Payment closed')}
+               />
+             </div>
+           )}
           </div>
           <div className="lg:col-span-1">
             <OrderSummary items={items} subtotal={subtotal} shipping_fee={shipping_fee} total={total} />

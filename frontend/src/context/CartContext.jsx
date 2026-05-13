@@ -110,6 +110,22 @@ const addToCart = async (product, selectedSize, selectedColor) => {
     }
   }
 
+  const clearCart = async () => {
+    if (!user) {
+      clearGuestCart()
+      setCart({ items: [] })
+      setCartCount(0)
+    } else {
+      try {
+        await API.delete("/api/cart/clear")
+        setCart({ items: [] })
+        setCartCount(0)
+      } catch (err) {
+        console.error("Failed to clear cart", err)
+      }
+    }
+  }
+
   const removeItem = async (productId, size, color) => {
     if (!user) {
       const updated = getGuestCart().filter(
@@ -179,7 +195,7 @@ const addToCart = async (product, selectedSize, selectedColor) => {
   }, [user])
 
   return (
-    <CartContext.Provider value={{ cart, cartCount, fetchCart, addToCart, removeItem, updateQuantity, mergeGuestCart }}>
+    <CartContext.Provider value={{ cart, cartCount, fetchCart, addToCart, removeItem, updateQuantity, mergeGuestCart, clearCart }}>
       {children}
     </CartContext.Provider>
   )

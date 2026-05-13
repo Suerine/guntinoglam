@@ -62,7 +62,7 @@ const OrderInformation = () => {
 
         <p className="max-w-2xl mx-auto text-gray-600 text-sm sm:text-base leading-relaxed">
           Everything you need to know about order processing, shipping,
-          delivery, returns, and exchanges.
+          delivery, returns, and exchanges. For more information, please contact our customer support team on <a href="mailto:artbynajmaa@gmail.com?subject=Order%20Inquiry" className="text-pink-500 underline">artbynajmaa@gmail.com</a> or call us at <a href="tel:+254793904535" className="text-pink-500 underline">+254 793 904 535</a>.
         </p>
       </div>
 
@@ -86,6 +86,51 @@ const OrderInformation = () => {
             </p>
           </div>
         ))}
+      </div>
+
+      {/* Detailed Section */}
+      <div className="max-w-5xl mx-auto bg-white  p-8 sm:p-12 shadow-sm border border-gray-100 mb-5">
+        <h2 className="font-playfair text-3xl sm:text-4xl text-black mb-8">
+         Buying Process
+        </h2>
+
+        <div className="space-y-8 text-gray-700 text-sm sm:text-base leading-relaxed">
+          <div>
+            <h3 className="font-semibold text-black mb-2">
+              Browse
+            </h3>
+            <p>
+              Choose the Dirac/Guntino of your choice from our wide selection.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-black mb-2">
+              Add To Cart & Checkout
+            </h3>
+            <p>
+              Add your desired items to the cart and proceed to checkout to complete your purchase securely.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-black mb-2">
+              Payment
+            </h3>
+            <p>
+              Select your preferred payment method and follow the prompts to complete your transaction securely.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-black mb-2">
+              Delivery
+            </h3>
+            <p>
+              Sit back and relax while we prepare and deliver your order to your doorstep. You can track your order status in your account.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Detailed Section */}
