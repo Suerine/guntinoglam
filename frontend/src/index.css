@@ -13,8 +13,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-link-item {
   position: relative;
-  font-family: 'Playfair Display', serif;
-  font-size: 0.90rem;
+  font-family: 'montserrat', sans-serif;
+  font-size: 0.70rem;
   font-weight: 400;
   letter-spacing: 0.15em;
   color: rgba(0, 0, 0, 0.618);

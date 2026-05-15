@@ -172,7 +172,7 @@ function Navbar() {
           <div className="flex items-center justify-between">
 
              {/* Desktop nav links — left */}
-           <ul className="hidden md:flex gap-4 lg:gap-6 flex-1">
+           <ul className="hidden md:flex gap-4 lg:gap-6 flex-1 uppercase">
             {[
               { to: "/products?collection=Maqbal", label: "Maqbal" },
               { to: "/products?collection=Stones", label: "Stones" },
