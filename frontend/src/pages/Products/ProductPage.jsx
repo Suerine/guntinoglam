@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useMemo } from "react"
 import { useParams, Link } from "react-router-dom"
+import { Helmet } from "react-helmet-async"
 import API from "../../api/axios"
 import ProductCard from "./ProductCard"
 import { CartContext } from "../../context/CartContext"
@@ -8,6 +9,7 @@ import { FaWhatsapp } from "react-icons/fa"
 import { FiShoppingCart, FiChevronRight, FiHeart, FiStar } from "react-icons/fi"
 import { WishlistContext } from "../../context/WishlistContext"
 import ShippingInfoDropdown from "../Shop/ShippingInformation"
+import { generateProductSchema, generateBreadcrumbSchema, getCanonicalUrl } from "../../utils/seoUtils"
 
 const ProductPage = () => {
   const { id } = useParams()
@@ -81,8 +83,57 @@ const ProductPage = () => {
   const displayPrice = product.price
   const originalPrice = product.originalPrice
 
+  // Generate SEO schemas
+  const productSchema = generateProductSchema(product)
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Products", url: "/products" },
+    { name: product.name, url: `/products/${product._id}` }
+  ])
+
+  const productUrl = `https://guntinoglam.com/products/${product._id}`
+  const productImage = product.images?.[0] || "https://guntinoglam.com/og-image.jpg"
+
   return (
-    <div className="min-h-screen bg-[#FFF7FF] py-6 sm:py-12">
+    <>
+      <Helmet>
+        <title>{product.name} | Guntino Glam - Somali Fashion & Dirac</title>
+        <meta name="description" content={`${product.name} - ${product.description || 'High-quality Somali fashion item from Guntino Glam. Available for purchase or hire in Nairobi.'}`} />
+        <meta name="keywords" content={`${product.name}, ${product.category}, ${product.collection}, Dirac, Somali fashion, Guntino Glam`} />
+        <link rel="canonical" href={productUrl} />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content={product.name} />
+        <meta property="og:description" content={product.description || 'Premium Somali fashion from Guntino Glam'} />
+        <meta property="og:url" content={productUrl} />
+        <meta property="og:image" content={productImage} />
+        <meta property="og:site_name" content="Guntino Glam" />
+        <meta property="og:locale" content="en_KE" />
+        
+        {/* Product OG tags */}
+        <meta property="product:price:amount" content={product.price} />
+        <meta property="product:price:currency" content="KES" />
+        <meta property="product:category" content={product.category} />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="product" />
+        <meta name="twitter:title" content={product.name} />
+        <meta name="twitter:description" content={product.description || 'Premium Somali fashion from Guntino Glam'} />
+        <meta name="twitter:image" content={productImage} />
+        <meta name="twitter:data1" content={`KES ${product.price}`} />
+        <meta name="twitter:label1" content="Price" />
+        
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(productSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
+      </Helmet>
+
+      <div className="min-h-screen bg-[#FFF7FF] py-6 sm:py-12">
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@600;700&display=swap');
@@ -435,7 +486,7 @@ const ProductPage = () => {
        )}
 
       </div>
-    </div>
+    </>
   )
 }
 

@@ -1,3 +1,20 @@
 User-agent: *
 Allow: /
-Sitemap: https://guntinoglam.com/sitemap.xml
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /orders
+Disallow: /profile
+Disallow: /login
+Disallow: /wishlist
+Allow: /products
+
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Crawl-delay: 1
+
+User-agent: Bingbot
+Crawl-delay: 1
+
+Sitemap: https://guntinoglam.com/api/sitemap.xml
