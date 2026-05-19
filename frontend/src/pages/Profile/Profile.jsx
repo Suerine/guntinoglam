@@ -1,7 +1,8 @@
 import { useContext } from "react"
 import { AuthContext } from "../../context/AuthContext"
 import { Link, useNavigate } from "react-router-dom"
-import { FiShoppingBag, FiHeart, FiShoppingCart, FiLogOut, FiUser, FiMail, FiChevronRight } from "react-icons/fi"
+import { FiShoppingBag, FiHeart, FiShoppingCart, FiLogOut, FiUser, FiMail, FiChevronRight, FiSettings } from "react-icons/fi"
+import { ChevronRightIcon } from "lucide-react"
 
 function ProfilePage() {
   const { user, logout } = useContext(AuthContext)
@@ -68,7 +69,13 @@ function ProfilePage() {
             <div>
               <p className="prod-dm text-[#191A23]/50 text-xs tracking-[0.3em] uppercase mb-2">Welcome back</p>
               <h1 className="font-playfair text-3xl sm:text-4xl lg:text-5xl leading-tight text-[#191A23]">{user.name}</h1>
-              <p className="prod-dm text-[#191A23]/60 text-sm mt-2">{user.email}</p>
+              <p className="prod-dm text-[#191A23]/60 text-sm mt-2 mb-2">{user.email}</p>
+               {/* Admin Card - Only visible if user is admin */}
+            {user.role === "admin" && (
+              <Link to="/admin" className="ml-auto inline-flex items-center gap-2 prod-dm text-sm font-medium text-pink-600 hover:text-pink-700 transition-colors">
+                Go to Admin Dashboard <ChevronRightIcon className="w-4 h-4 ml-1 text-pink-600" />
+              </Link>
+            )}
             </div>
           </div>
         </div>

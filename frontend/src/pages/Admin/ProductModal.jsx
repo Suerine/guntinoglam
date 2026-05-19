@@ -3,7 +3,7 @@ import { FiX, FiUploadCloud, FiTrash2 } from "react-icons/fi"
 import toast from "react-hot-toast"
 import API from "../../api/axios"
 
-const CATEGORIES = ["Jerseys", "Boots", "Balls"]
+const CATEGORIES = ["Dirac"]
 const COLLECTIONS = ["Maqbal", "Stones", "Faransawi", "Guntino", "Baati", "Hido Iyo Dhaqan"]
 
 const labelStyle = {

@@ -7,7 +7,7 @@ import {
 import toast from "react-hot-toast"
 import ProductModal from "./ProductModal"
 
-const CATEGORIES = ["All", "Jerseys", "Boots", "Balls"]
+const CATEGORIES = ["All", "Dirac"]
 
 const ProductsTab = () => {
   const [products, setProducts] = useState([])
