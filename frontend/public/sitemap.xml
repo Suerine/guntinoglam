@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Core pages -->
   <url>
     <loc>https://guntinoglam.com/</loc>
     <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://guntinoglam.com/products</loc>
     <priority>0.9</priority>
+    <changefreq>daily</changefreq>
   </url>
+
+  <!-- Collections -->
   <url>
     <loc>https://guntinoglam.com/products?collection=Faransawi</loc>
     <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://guntinoglam.com/products?collection=Maqbal</loc>
     <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://guntinoglam.com/products?collection=Guntino</loc>
     <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
   </url>
+  <url>
+    <loc>https://guntinoglam.com/products?collection=Stones</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://guntinoglam.com/products?collection=Baati</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://guntinoglam.com/products?collection=Traditional</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
 </urlset>
