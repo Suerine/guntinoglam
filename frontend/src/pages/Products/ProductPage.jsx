@@ -486,6 +486,7 @@ const ProductPage = () => {
        )}
 
       </div>
+    </div> 
     </>
   )
 }
