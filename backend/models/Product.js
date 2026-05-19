@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const productSchema = new mongoose.Schema(
   {
@@ -44,15 +45,28 @@ const productSchema = new mongoose.Schema(
 
     rating: { type: Number, default: 0, min: 0, max: 5 },
     numReviews: { type: Number, default: 0 },
-
     displayOrder: { type: Number, default: 0 },
-
     isFeatured: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
+
+    // SEO fields
+    slug: { type: String, unique: true, lowercase: true, trim: true },
+    metaTitle: { type: String, maxlength: 60, trim: true },
+    metaDescription: { type: String, maxlength: 160, trim: true },
+    metaKeywords: { type: String, trim: true },
+    altText: { type: String, trim: true },
+    ogImage: { type: String },
+    longDescription: { type: String },
   },
   { timestamps: true },
 );
 
-const Product = mongoose.model("Product", productSchema);
+// Auto-generate slug from name
+productSchema.pre("save", function (next) {
+  if (this.isModified("name") || !this.slug) {
+    this.slug = slugify(this.name, { lower: true, strict: true });
+  }
+  next();
+});
 
-export default Product;
+export default mongoose.model("Product", productSchema);

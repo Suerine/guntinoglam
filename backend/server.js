@@ -11,6 +11,7 @@ import wishlistRoutes from "./routes/wishlistRoutes.js";
 import MpesaRoutes from "./routes/MpesaRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import paystackRoutes from "./routes/paystackRoutes.js";
+import sitemapRoutes from "./routes/sitemapRoutes.js";
 
 process.on("unhandledRejection", (err) => {
   console.error("Unhandled Rejection:", err);
@@ -67,6 +68,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payments/mpesa", MpesaRoutes);
 app.use("/api/payments/paystack", paystackRoutes);
+app.use(sitemapRoutes);
 
 app.get("/", (req, res) => {
   res.send("GOF Store API is running...");
