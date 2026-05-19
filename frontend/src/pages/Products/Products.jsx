@@ -33,6 +33,7 @@ function Products() {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [totalProducts, setTotalProducts] = useState(0)
+  const [sortOrder, setSortOrder] = useState("admin-order")
 
   const [searchParams] = useSearchParams()
   const search = searchParams.get("search")
@@ -42,6 +43,25 @@ function Products() {
   const filteredProducts = (products || []).filter((product) =>
     product.name.toLowerCase().includes(search?.toLowerCase() || "")
   )
+
+  // Sort products based on sortOrder
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortOrder) {
+      case "price-low-high":
+        return (a.price || 0) - (b.price || 0)
+      case "price-high-low":
+        return (b.price || 0) - (a.price || 0)
+      case "name-a-z":
+        return (a.name || "").localeCompare(b.name || "")
+      case "name-z-a":
+        return (b.name || "").localeCompare(a.name || "")
+      case "admin-order":
+        return (a.displayOrder || 0) - (b.displayOrder || 0)
+      case "newest":
+      default:
+        return new Date(b.createdAt) - new Date(a.createdAt)
+    }
+  })
 
   useEffect(() => {
     setCollection(collectionParam || "All")
@@ -95,8 +115,8 @@ function Products() {
       }
     />
     <meta property="og:title" content={collection !== 'All' ? `${collection} Collection | Guntino Glam` : 'Shop | Guntino Glam'} />
-    <meta property="og:url" content={`https://guntinoglam.vercel.app/products${collection !== 'All' ? `?collection=${collection}` : ''}`} />
-    <link rel="canonical" href={`https://guntinoglam.vercel.app/products${collection !== 'All' ? `?collection=${collection}` : ''}`} />
+    <meta property="og:url" content={`https://guntinoglam.com/products${collection !== 'All' ? `?collection=${collection}` : ''}`} />
+    <link rel="canonical" href={`https://guntinoglam.com/products${collection !== 'All' ? `?collection=${collection}` : ''}`} />
   </Helmet>
     <div style={{ minHeight: '100vh', background: '#FFF7FF' }}>
 
@@ -178,6 +198,30 @@ function Products() {
            activeCount={(collection !== 'All' ? 1 : 0) + (category !== 'All' ? 1 : 0)}
          />
        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+         <select
+           value={sortOrder}
+           onChange={(e) => setSortOrder(e.target.value)}
+           style={{
+             fontFamily: 'Montserrat, sans-serif',
+             fontSize: '0.55rem',
+             letterSpacing: '0.2em',
+             textTransform: 'uppercase',
+             color: 'rgba(0,0,0,0.6)',
+             background: '#FFF7FF',
+             border: '1px solid rgba(0,0,0,0.1)',
+             padding: '0.5rem 0.75rem',
+             borderRadius: '4px',
+             cursor: 'pointer',
+             outline: 'none',
+           }}
+         >
+           <option value="admin-order">Recommended</option>
+           <option value="newest">Newest</option>
+           <option value="price-low-high">Price: Low to High</option>
+           <option value="price-high-low">Price: High to Low</option>
+           <option value="name-a-z">Name: A to Z</option>
+           <option value="name-z-a">Name: Z to A</option>
+         </select>
          {!loading && (
            <p style={{
              fontFamily: 'Montserrat, sans-serif',
@@ -242,7 +286,7 @@ function Products() {
         {!loading && filteredProducts.length > 0 && (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-1">
-              {filteredProducts.map((product) => (
+              {sortedProducts.map((product) => (
                 <Link key={product._id} to={`/products/${product._id}`} className="product-card-link">
                   <ProductCard product={product} />
                 </Link>

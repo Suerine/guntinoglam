@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import API from "../../api/axios"
 import {
   FiPlus, FiEdit2, FiTrash2, FiSearch,
-  FiChevronLeft, FiChevronRight, FiEye, FiEyeOff, FiPackage
+  FiChevronLeft, FiChevronRight, FiEye, FiEyeOff, FiPackage, FiArrowUp, FiArrowDown, FiCheck, FiX
 } from "react-icons/fi"
 import toast from "react-hot-toast"
 import ProductModal from "./ProductModal"
@@ -20,6 +20,9 @@ const ProductsTab = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState(null)
   const [deleteId, setDeleteId] = useState(null)
+  const [isReordering, setIsReordering] = useState(false)
+  const [displayOrders, setDisplayOrders] = useState({})
+  const [isSavingOrder, setIsSavingOrder] = useState(false)
 
   useEffect(() => {
     const load = async () => {
@@ -32,6 +35,13 @@ const ProductsTab = () => {
         setProducts(res.data.products)
         setTotal(res.data.totalProducts)
         setPages(res.data.pages)
+        
+        // Initialize display orders from products
+        const orders = {}
+        res.data.products.forEach(p => {
+          orders[p._id] = p.displayOrder || 0
+        })
+        setDisplayOrders(orders)
       } catch {
         toast.error("Failed to load products")
       } finally {
@@ -80,6 +90,30 @@ const ProductsTab = () => {
     }
   }
 
+  const handleSaveOrder = async () => {
+    try {
+      setIsSavingOrder(true)
+      const orders = products.map(p => ({
+        productId: p._id,
+        displayOrder: parseInt(displayOrders[p._id]) || 0
+      }))
+      await API.patch("/api/admin/products/reorder", { orders })
+      toast.success("Product order updated successfully")
+      setIsReordering(false)
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to save order")
+    } finally {
+      setIsSavingOrder(false)
+    }
+  }
+
+  const handleOrderChange = (productId, value) => {
+    setDisplayOrders(prev => ({
+      ...prev,
+      [productId]: value
+    }))
+  }
+
   const filterBtnStyle = (active) => ({
     padding: '0.5rem 1rem',
     border: active ? '1px solid #191A23' : '1px solid rgba(0,0,0,0.08)',
@@ -118,59 +152,126 @@ const ProductsTab = () => {
         <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.55rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)' }}>
           {total} product{total !== 1 ? "s" : ""}
         </p>
-        <button
-          onClick={() => { setEditingProduct(null); setModalOpen(true) }}
-          style={{
-            display: 'flex', alignItems: 'center', gap: '0.5rem',
-            padding: '0.6rem 1.25rem',
-            border: 'none',
-            background: '#191A23',
-            fontFamily: 'Montserrat, sans-serif',
-            fontSize: '0.5rem',
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: '#fff',
-            cursor: 'pointer',
-            transition: 'background 0.2s',
-          }}
-        >
-          <FiPlus style={{ fontSize: '0.65rem' }} /> Add Product
-        </button>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          {isReordering ? (
+            <>
+              <button
+                onClick={handleSaveOrder}
+                disabled={isSavingOrder}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.6rem 1.25rem',
+                  border: 'none',
+                  background: '#10b981',
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontSize: '0.5rem',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: '#fff',
+                  cursor: isSavingOrder ? 'not-allowed' : 'pointer',
+                  opacity: isSavingOrder ? 0.6 : 1,
+                  transition: 'all 0.2s',
+                }}
+              >
+                <FiCheck style={{ fontSize: '0.65rem' }} /> {isSavingOrder ? 'Saving...' : 'Save Order'}
+              </button>
+              <button
+                onClick={() => setIsReordering(false)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.6rem 1.25rem',
+                  border: 'none',
+                  background: '#ef4444',
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontSize: '0.5rem',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              >
+                <FiX style={{ fontSize: '0.65rem' }} /> Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setIsReordering(true)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.6rem 1.25rem',
+                  border: 'none',
+                  background: '#8b5cf6',
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontSize: '0.5rem',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              >
+                <FiArrowUp style={{ fontSize: '0.65rem' }} /> Reorder
+              </button>
+              <button
+                onClick={() => { setEditingProduct(null); setModalOpen(true) }}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.6rem 1.25rem',
+                  border: 'none',
+                  background: '#191A23',
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontSize: '0.5rem',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s',
+                }}
+              >
+                <FiPlus style={{ fontSize: '0.65rem' }} /> Add Product
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Filters */}
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-        <div style={{ position: 'relative', flex: 1, maxWidth: '16rem' }}>
-          <FiSearch style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'rgba(0,0,0,0.2)' }} />
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={e => { setSearch(e.target.value); setPage(1) }}
-            style={{
-              width: '100%',
-              paddingLeft: '2rem',
-              paddingRight: '0.75rem',
-              padding: '0.6rem 0.75rem 0.6rem 2rem',
-              fontFamily: 'Montserrat, sans-serif',
-              fontSize: '0.7rem',
-              border: '1px solid rgba(0,0,0,0.08)',
-              outline: 'none',
-              background: 'transparent',
-              color: '#191A23',
-              letterSpacing: '0.03em',
-              boxSizing: 'border-box',
-            }}
-          />
+      {!isReordering && (
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div style={{ position: 'relative', flex: 1, maxWidth: '16rem' }}>
+            <FiSearch style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'rgba(0,0,0,0.2)' }} />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={e => { setSearch(e.target.value); setPage(1) }}
+              style={{
+                width: '100%',
+                paddingLeft: '2rem',
+                paddingRight: '0.75rem',
+                padding: '0.6rem 0.75rem 0.6rem 2rem',
+                fontFamily: 'Montserrat, sans-serif',
+                fontSize: '0.7rem',
+                border: '1px solid rgba(0,0,0,0.08)',
+                outline: 'none',
+                background: 'transparent',
+                color: '#191A23',
+                letterSpacing: '0.03em',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: '0.35rem' }}>
+            {CATEGORIES.map(cat => (
+              <button key={cat} onClick={() => { setCategoryFilter(cat); setPage(1) }} style={filterBtnStyle(categoryFilter === cat)}>
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: '0.35rem' }}>
-          {CATEGORIES.map(cat => (
-            <button key={cat} onClick={() => { setCategoryFilter(cat); setPage(1) }} style={filterBtnStyle(categoryFilter === cat)}>
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
+      )}
 
       {/* Grid */}
       {loading ? (
@@ -240,33 +341,62 @@ const ProductsTab = () => {
                 )}
               </div>
 
-              {/* Actions */}
-              <div style={{ display: 'flex', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
-                <button
-                  onClick={() => { setEditingProduct(p); setModalOpen(true) }}
-                  style={{ ...actionBtnStyle, color: 'rgba(0,0,0,0.4)' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.02)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                >
-                  <FiEdit2 style={{ fontSize: '0.55rem' }} /> Edit
-                </button>
-                <button
-                  onClick={() => handleToggle(p._id, p.isActive)}
-                  style={{ ...actionBtnStyle, color: 'rgba(0,0,0,0.4)', borderLeft: '1px solid rgba(0,0,0,0.04)', borderRight: '1px solid rgba(0,0,0,0.04)' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.02)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                >
-                  {p.isActive ? <><FiEyeOff style={{ fontSize: '0.55rem' }} /> Hide</> : <><FiEye style={{ fontSize: '0.55rem' }} /> Show</>}
-                </button>
-                <button
-                  onClick={() => setDeleteId(p._id)}
-                  style={{ ...actionBtnStyle, color: 'rgba(220,38,38,0.6)' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(220,38,38,0.03)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                >
-                  <FiTrash2 style={{ fontSize: '0.55rem' }} /> Delete
-                </button>
-              </div>
+              {/* Actions or Reorder Input */}
+              {isReordering ? (
+                <div style={{ padding: '0.85rem 1rem', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <label style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.45rem', letterSpacing: '0.1em', color: 'rgba(0,0,0,0.4)', textTransform: 'uppercase' }}>
+                      Display Order:
+                    </label>
+                    <input
+                      type="number"
+                      value={displayOrders[p._id] || 0}
+                      onChange={(e) => handleOrderChange(p._id, e.target.value)}
+                      style={{
+                        flex: 1,
+                        padding: '0.5rem',
+                        fontFamily: 'Montserrat, sans-serif',
+                        fontSize: '0.65rem',
+                        border: '1px solid rgba(0,0,0,0.1)',
+                        borderRadius: '3px',
+                        outline: 'none',
+                        background: '#fff',
+                      }}
+                      min="0"
+                    />
+                  </div>
+                  <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.4rem', color: 'rgba(0,0,0,0.25)', marginTop: '0.3rem', letterSpacing: '0.05em' }}>
+                    Lower number = appears first
+                  </p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
+                  <button
+                    onClick={() => { setEditingProduct(p); setModalOpen(true) }}
+                    style={{ ...actionBtnStyle, color: 'rgba(0,0,0,0.4)' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.02)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <FiEdit2 style={{ fontSize: '0.55rem' }} /> Edit
+                  </button>
+                  <button
+                    onClick={() => handleToggle(p._id, p.isActive)}
+                    style={{ ...actionBtnStyle, color: 'rgba(0,0,0,0.4)', borderLeft: '1px solid rgba(0,0,0,0.04)', borderRight: '1px solid rgba(0,0,0,0.04)' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.02)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    {p.isActive ? <><FiEyeOff style={{ fontSize: '0.55rem' }} /> Hide</> : <><FiEye style={{ fontSize: '0.55rem' }} /> Show</>}
+                  </button>
+                  <button
+                    onClick={() => setDeleteId(p._id)}
+                    style={{ ...actionBtnStyle, color: 'rgba(220,38,38,0.6)' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(220,38,38,0.03)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <FiTrash2 style={{ fontSize: '0.55rem' }} /> Delete
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

@@ -6,11 +6,11 @@ const About = ({ isMobile }) => {
   return (
    <>
    <Helmet>
-        <title>About Us | Guntino Glam</title>
+        <title>Guntino Glam | Somali Fashion & Dirac</title>
         <meta name="description" content="Guntino Glam is a Nairobi-based fashion brand celebrating Somali dress. We sell and rent Dirac for weddings — Guntino, Maqbal, Faransawi and more." />
         <meta property="og:title" content="About Us | Guntino Glam" />
         <meta property="og:description" content="Rooted in heritage, dressed for today. Curated Dirac collections for the modern Somali woman." />
-        <meta property="og:url" content="https://guntinoglam.vercel.app/about" />
+        <meta property="og:url" content="https://guntinoglam.com/about" />
         <meta name="keywords" content="Luxury,Dirac, Somali fashion, Guntino, Maqbal, Faransawi, Nairobi, wedding dress, Somali wedding" />
       </Helmet>
     <section

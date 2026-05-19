@@ -5,6 +5,7 @@ import {
   adminCreateProduct,
   adminUpdateProduct,
   adminToggleProduct,
+  adminReorderProducts,
   adminDeleteProduct,
   adminGetOrders,
   adminUpdateOrderStatus,
@@ -25,6 +26,7 @@ router.get("/products", adminGetProducts);
 router.post("/products", adminCreateProduct);
 router.put("/products/:id", adminUpdateProduct);
 router.patch("/products/:id/toggle", adminToggleProduct);
+router.patch("/products/reorder", adminReorderProducts);
 router.delete("/products/:id", adminDeleteProduct);
 
 // Order routes

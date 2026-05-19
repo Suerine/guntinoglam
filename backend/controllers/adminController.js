@@ -390,3 +390,33 @@ export const adminUpdateUserRole = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+/* REORDER PRODUCTS (Admin) */
+export const adminReorderProducts = async (req, res) => {
+  try {
+    const { orders } = req.body; // expects array of { productId, displayOrder }
+
+    if (!Array.isArray(orders)) {
+      return res.status(400).json({ message: "Orders must be an array" });
+    }
+
+    // Update all products with their new display order
+    for (const { productId, displayOrder } of orders) {
+      if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return res
+          .status(400)
+          .json({ message: `Invalid product ID: ${productId}` });
+      }
+
+      await Product.findByIdAndUpdate(
+        productId,
+        { displayOrder },
+        { new: true, runValidators: true },
+      );
+    }
+
+    res.status(200).json({ message: "Products reordered successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

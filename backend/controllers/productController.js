@@ -112,7 +112,7 @@ export const getProducts = async (req, res) => {
     const count = await Product.countDocuments(filter);
 
     const products = await Product.find(filter)
-      .sort({ createdAt: -1 })
+      .sort({ displayOrder: 1, createdAt: -1 })
       .limit(limit)
       .skip(limit * (page - 1));
 
@@ -219,6 +219,7 @@ export const updateProduct = async (req, res) => {
       "rentalDuration",
       "rating",
       "numReviews",
+      "displayOrder",
       "isFeatured",
     ];
 
