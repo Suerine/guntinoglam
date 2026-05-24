@@ -22,7 +22,7 @@ const TopCollection = ({ isMobile }) => {
       <div style={{
         position: 'relative',
         width: isMobile ? '100%' : '50%',
-        height: isMobile ? '55%' : '100%',
+        height: isMobile ? '50%' : '100%',
         flexShrink: 0,
       }}>
         <img
@@ -50,9 +50,9 @@ const TopCollection = ({ isMobile }) => {
         zIndex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        padding: isMobile ? '1.5rem' : '0 4rem',
-        height: isMobile ? '45%' : '100%',
+        justifyContent: isMobile ? 'flex-start' : 'center',
+        padding: isMobile ? '1.5rem 1.5rem 0' : '0 4rem',
+        height: isMobile ? '85%' : '100%',
       }}>
         <p style={{
           fontFamily: 'Montserrat, sans-serif',
@@ -67,17 +67,17 @@ const TopCollection = ({ isMobile }) => {
 
         <h1 style={{
           fontFamily: 'Playfair Display, serif',
-          fontSize: isMobile ? '2.5rem' : 'clamp(3rem, 6vw, 5.5rem)',
+          fontSize: isMobile ? '2rem' : 'clamp(3rem, 6vw, 5.5rem)',
           fontWeight: 200,
           letterSpacing: '0.08em',
           color: '#191A23',
           lineHeight: 1.05,
-          marginBottom: '1.5rem',
+          marginBottom: isMobile ? '0.5rem' : '3rem',
         }}>
           STONES
         </h1>
 
-        <div style={{ width: '2.5rem', height: '1px', background: '#191A23', marginBottom: isMobile ? '1rem' : '3rem' }} />
+        <div style={{ width: '2.5rem', height: '1px', background: '#191A23', marginBottom: isMobile ? '1rem' : '2rem' }} />
 
         <p style={{
            fontFamily: '"Cormorant Garamond", serif',
@@ -85,7 +85,7 @@ const TopCollection = ({ isMobile }) => {
            fontWeight: 300,
            lineHeight: 1.9,
            color: 'rgba(0,0,0,0.55)',
-           maxWidth: '28ch',
+           maxWidth: isMobile ? '55ch' : '28ch',
            marginBottom: isMobile ? '1rem' : '3rem',
            fontStyle: 'italic',
          }}>

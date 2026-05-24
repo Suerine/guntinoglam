@@ -104,9 +104,9 @@ const ProductModal = ({ product, onClose, onSave }) => {
     try {
       // Import API at the top, or pass it as prop, wait we need to import API from axios
       // I will import API at the top in the next chunk if not already imported.
-      const res = await API.post("/api/products/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      })
+      // Don't manually set Content-Type — axios auto-sets it with the
+      // required multipart boundary when it detects FormData
+      const res = await API.post("/api/products/upload", formData)
       setForm(prev => ({ ...prev, images: [...prev.images, ...res.data.images] }))
       toast.success("Images uploaded")
     } catch (err) {

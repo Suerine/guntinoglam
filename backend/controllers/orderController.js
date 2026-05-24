@@ -2,6 +2,7 @@ import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
 import mongoose from "mongoose";
+import { sendGuestOrderConfirmationEmail } from "../utils/emailService.js";
 
 /* CREATE ORDER FROM CART */
 export const createOrder = async (req, res) => {
@@ -121,7 +122,206 @@ export const createOrder = async (req, res) => {
   }
 };
 
-/* GET SINGLE ORDER */
+/* CREATE GUEST ORDER (from Paystack payment) */
+export const createGuestOrder = async (req, res) => {
+  try {
+    const {
+      items,
+      guestEmail,
+      guestName,
+      guestPhone,
+      shippingAddress,
+      paymentReference,
+      itemsPrice,
+      shippingPrice,
+      totalPrice,
+    } = req.body;
+
+    // Validate required fields
+    if (
+      !guestEmail ||
+      !guestName ||
+      !guestPhone ||
+      !shippingAddress ||
+      !items ||
+      items.length === 0
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Missing required guest checkout fields" });
+    }
+
+    if (!paymentReference) {
+      return res.status(400).json({ message: "Payment reference is required" });
+    }
+
+    // Generate orderId
+    const timestamp = Date.now();
+    const randomStr = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const orderId = `GG-${timestamp}-${randomStr}`;
+
+    // Validate stock and prepare order items
+    const orderItems = [];
+    for (const item of items) {
+      const product = await Product.findById(item.productId);
+
+      if (!product || !product.isActive) {
+        return res.status(400).json({
+          message: `Product "${item.name}" is no longer available`,
+        });
+      }
+
+      const selectedSize = product.sizes.find((s) => s.size === item.size);
+
+      if (!selectedSize) {
+        return res.status(400).json({
+          message: `Size "${item.size}" not available for ${product.name}`,
+        });
+      }
+
+      if (selectedSize.stock < item.quantity) {
+        return res.status(400).json({
+          message: `Insufficient stock for ${product.name}. Available: ${selectedSize.stock}`,
+        });
+      }
+
+      // Reduce stock
+      selectedSize.stock -= item.quantity;
+      await product.save();
+
+      orderItems.push({
+        product: product._id,
+        name: product.name,
+        size: item.size,
+        color: item.color || null,
+        quantity: item.quantity,
+        price: item.price,
+        image: product.images?.[0] || "",
+        isRental: item.isRental || false,
+        rentalStartDate: item.rentalStartDate || null,
+        rentalEndDate: item.rentalEndDate || null,
+        rentalDuration: item.rentalDuration || null,
+      });
+    }
+
+    // Create guest order
+    const order = await Order.create({
+      isGuest: true,
+      guestEmail,
+      guestName,
+      guestPhone,
+      orderId,
+      orderItems,
+      shippingAddress,
+      paymentMethod: "paystack",
+      itemsPrice,
+      shippingPrice: shippingPrice || 0,
+      totalPrice,
+      isPaid: true,
+      paidAt: new Date(),
+      status: "processing",
+      paymentResult: {
+        transactionId: paymentReference,
+        status: "completed",
+        paidAt: new Date(),
+      },
+    });
+
+    // Send confirmation email
+    try {
+      await sendGuestOrderConfirmationEmail(order);
+    } catch (emailError) {
+      console.error("Failed to send confirmation email:", emailError);
+      // Don't fail the order creation if email fails
+    }
+
+    res.status(201).json({
+      message: "Guest order created successfully",
+      order,
+      orderId: order.orderId,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/* GET GUEST ORDER BY ID (no auth required) */
+export const getGuestOrderById = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await Order.findOne({ orderId, isGuest: true }).populate(
+      "orderItems.product",
+      "name price images",
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/* GET GUEST ORDER BY EMAIL (no auth required) */
+export const getGuestOrdersByEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const orders = await Order.find({
+      guestEmail: email.toLowerCase(),
+      isGuest: true,
+    })
+      .populate("orderItems.product", "name price images")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/* UPDATE GUEST ORDER PAYMENT STATUS */
+export const updateGuestPaymentStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status, transactionId } = req.body;
+
+    const order = await Order.findOne({ orderId, isGuest: true });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Update payment result
+    order.paymentResult = {
+      transactionId: transactionId || order.paymentResult?.transactionId,
+      status: status || "pending",
+      paidAt: status === "completed" ? new Date() : order.paymentResult?.paidAt,
+    };
+
+    // Mark as paid if status is completed
+    if (status === "completed") {
+      order.isPaid = true;
+      order.paidAt = new Date();
+      order.status = "processing";
+    }
+
+    await order.save();
+
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/* GET SINGLE ORDER (original function continued) */
 export const getOrderById = async (req, res) => {
   try {
     const { id } = req.params;

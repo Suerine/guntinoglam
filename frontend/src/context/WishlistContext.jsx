@@ -51,7 +51,7 @@ export const WishlistProvider = ({ children }) => {
             }}>
               <WishlistToast product={product} removed={false} />
             </div>
-          ))
+          ), { duration: 2000 })
         }
         return
       }
@@ -72,7 +72,7 @@ export const WishlistProvider = ({ children }) => {
         }}>
           <WishlistToast product={product} removed={false} />
         </div>
-      ))
+      ), { duration: 2000 })
 
       await API.post("/api/wishlist", { productId: product._id })
     } catch (err) {
@@ -106,7 +106,7 @@ export const WishlistProvider = ({ children }) => {
             }}>
               <WishlistToast product={product} removed={true} />
             </div>
-          ))
+          ), { duration: 2000 })
         }
         return
       }
@@ -124,7 +124,7 @@ export const WishlistProvider = ({ children }) => {
           }}>
             <WishlistToast product={product} removed={true} />
           </div>
-        ))
+        ), { duration: 2000 })
       }
 
       await API.delete(`/api/wishlist/${productId}`)
@@ -153,20 +153,20 @@ export const WishlistProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      const guestItems = getGuestWishlist()
-      if (!guestItems.length) {
-        // No guest items — safe to just fetch DB wishlist
-        fetchWishlist()
-      }
-      // If there ARE guest items, mergeGuestWishlist() will
-      // handle fetching after merge — don't fetch here
-    } else {
-      setWishlist(getGuestWishlist())
+      fetchWishlist()
+      mergeGuestWishlist()
     }
   }, [user])
 
   return (
-    <WishlistContext.Provider value={{ wishlist, loading, operationInProgress, addToWishlist, removeFromWishlist, mergeGuestWishlist }}>
+    <WishlistContext.Provider
+      value={{
+        wishlist,
+        loading,
+        addToWishlist,
+        removeFromWishlist,
+      }}
+    >
       {children}
     </WishlistContext.Provider>
   )

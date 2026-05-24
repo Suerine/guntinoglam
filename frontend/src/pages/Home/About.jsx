@@ -61,7 +61,7 @@ const About = ({ isMobile }) => {
         zIndex: 1,
         width: '100%',
         maxWidth: '1200px',
-        padding: isMobile ? '3rem 1.5rem 0rem' : '0 2.5rem',
+        padding: isMobile ? '1rem 1.5rem 0rem' : '0 2.5rem',
         display: 'grid',
         gridTemplateColumns: isMobile ? '1fr' : '1fr 1px 1fr',
         gap: isMobile ? '1.5rem' : '4rem',
@@ -76,19 +76,19 @@ const About = ({ isMobile }) => {
             letterSpacing: '0.45em',
             textTransform: 'uppercase',
             color: 'rgba(0,0,0,0.3)',
-            marginBottom: '1rem',
+            marginBottom: isMobile ? '0.5rem' : '1rem',
           }}>
             Who we are
           </p>
 
           <h2 style={{
             fontFamily: '"Cormorant Garamond", serif',
-            fontSize: isMobile ? '2.5rem' : 'clamp(2.8rem, 6vw, 5.5rem)',
+            fontSize: isMobile ? '1.8rem' : 'clamp(2.8rem, 6vw, 5.5rem)',
             fontWeight: 300,
             color: '#191A23',
             lineHeight: 1.1,
             letterSpacing: '0.02em',
-            marginBottom: isMobile ? '1rem' : '2rem',
+            marginBottom: isMobile ? '0rem' : '2rem',
           }}>
             Rooted in<br />
             heritage.<br />
@@ -104,7 +104,7 @@ const About = ({ isMobile }) => {
         {/* Right — copy */}
         <div>
           {/* Thin line */}
-          <div style={{ width: '2rem', height: '1px', background: 'rgba(0,0,0,0.15)', marginBottom: '1.25rem' }} />
+          <div style={{ width: '2rem', height: '1px', background: 'rgba(0,0,0,0.15)', marginBottom: isMobile ? '0.4rem' : '1.25rem' }} />
 
           <p style={{
             fontFamily: '"Cormorant Garamond", serif',
@@ -112,8 +112,8 @@ const About = ({ isMobile }) => {
             fontWeight: 300,
             fontStyle: 'italic',
             lineHeight: 1.85,
-            color: 'rgba(0,0,0,0.5)',
-            marginBottom: '1rem',
+            color: 'rgba(0,0,0,0.6)',
+            marginBottom: isMobile ? '0.5rem' : '1rem',
           }}>
             "We wanted to create a space where people can proudly wear and celebrate beautiful dirac, guntino and cultural fashion without feeling limited to one option."
           </p>
@@ -123,7 +123,7 @@ const About = ({ isMobile }) => {
               fontSize: '0.68rem',
               letterSpacing: '0.05em',
               lineHeight: 2,
-              color: 'rgba(0,0,0,0.4)',
+              color: 'rgba(0,0,0,0.8)',
               marginBottom: '2rem',
             }}>
              Guntino Glam was created out of love for our hido iyo dhaqankeena Soomaaliyeed. We noticed how people spend so much on beautiful dirac, guntiino, and cultural outfits, wear them once at aroos or special events, then leave them hanging in the closet or sell them away. That’s how Guntino Glam was born, a space where people can both rent and buy elegant cultural wear while still celebrating our Soomaalinimo, traditions, and timeless beauty in a modern and affordable way. 

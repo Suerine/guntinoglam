@@ -6,6 +6,7 @@ import API from "../../api/axios"
 import CheckoutHeader from "../../components/ui/CheckoutHeader"
 import Breadcrumb from "../../components/ui/Breadcrumb"
 import ShippingForm from "../../components/ui/ShippingForm"
+import GuestCheckoutForm from "../../components/ui/GuestCheckoutForm"
 import OrderSummary from "../../components/ui/OrderSummary"
 import PaystackPayment from "./PaystackPayment"
 
@@ -21,14 +22,41 @@ const CheckoutPage = () => {
   const [paymentError, setPaymentError] = useState(null)
   const [mpesaPhone, setMpesaPhone] = useState("")
   const [polling, setPolling] = useState(false)
+  
+  // User checkout state
   const [shipping, setShipping] = useState({
     fullName: user?.name || "", phone: "", address: "", city: "", county: "",
   })
+  
+  // Guest checkout state
+  const [guestInfo, setGuestInfo] = useState({
+    fullName: "", email: "", phone: "", address: "", city: "", county: "",
+  })
 
   const normalizeItem = (item) => {
-    const isPopulated = item.product && typeof item.product === "object"
-    if (!isPopulated) return null
-    return { id: item.product._id, name: item.product.name, image: item.product.images?.[0], size: item.size, price: item.price, quantity: item.quantity }
+    // Logged-in user: cart items come from API with populated `product` object
+    if (item.product && typeof item.product === "object") {
+      return {
+        id: item.product._id,
+        name: item.product.name,
+        image: item.product.images?.[0],
+        size: item.size,
+        price: item.price,
+        quantity: item.quantity,
+      }
+    }
+    // Guest user: cart items are flat objects from localStorage
+    if (item.productId) {
+      return {
+        id: item.productId,
+        name: item.name,
+        image: item.image,
+        size: item.size,
+        price: item.price,
+        quantity: item.quantity,
+      }
+    }
+    return null
   }
 
   const items = (cart?.items || []).map(normalizeItem).filter(Boolean)
@@ -37,6 +65,12 @@ const CheckoutPage = () => {
   const total = subtotal + shipping_fee
 
   const handleShippingSubmit = (e, goBack) => {
+    if (goBack) { setStep(1); return }
+    e.preventDefault()
+    setStep(2)
+  }
+
+  const handleGuestCheckoutSubmit = (e, goBack) => {
     if (goBack) { setStep(1); return }
     e.preventDefault()
     setStep(2)
@@ -222,7 +256,13 @@ const CheckoutPage = () => {
               </div>
             )}
 
-            <ShippingForm step={step} shipping={shipping} setShipping={setShipping} onSubmit={handleShippingSubmit} />
+            {/* User or Guest Form */}
+            {user ? (
+              <ShippingForm step={step} shipping={shipping} setShipping={setShipping} onSubmit={handleShippingSubmit} />
+            ) : (
+              <GuestCheckoutForm step={step} guestInfo={guestInfo} setGuestInfo={setGuestInfo} onSubmit={handleGuestCheckoutSubmit} />
+            )}
+            
             {!paymentStatus && (
              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '0.5rem 0' }}>
@@ -235,34 +275,82 @@ const CheckoutPage = () => {
                </div>
 
                <PaystackPayment
-                 email={user?.email}
+                 email={user?.email || guestInfo.email}
                  amount={total}
-                 metadata={{ shipping, items: items.map(i => ({ name: i.name, quantity: i.quantity })) }}
+                 metadata={{ shipping: user ? shipping : guestInfo, items: items.map(i => ({ name: i.name, quantity: i.quantity })) }}
                  onSuccess={async (response) => {
                    setPaymentStatus('pending')
                    setPaymentError(null)
                    try {
                      console.log('Payment response:', response)
-                     const res = await API.post('/api/payments/paystack/create-order', {
+
+                     // Prepare order data
+                     const orderData = {
                        reference: response.reference,
                        items: items.map(item => ({
-                         product: item.id,
+                         productId: item.id,
                          name: item.name,
                          image: item.image,
                          size: item.size,
                          quantity: item.quantity,
                          price: item.price,
                        })),
-                       shipping: {
+                       shippingAddress: user ? {
                          address: shipping.address,
                          city: shipping.city,
                          postalCode: shipping.county,
+                         country: 'Kenya',
+                       } : {
+                         address: guestInfo.address,
+                         city: guestInfo.city,
+                         postalCode: guestInfo.county,
                          country: 'Kenya',
                        },
                        itemsPrice: subtotal,
                        shippingPrice: shipping_fee,
                        totalPrice: total,
-                     })
+                     }
+
+                     // Guest checkout flow
+                     if (!user) {
+                       const guestOrderData = {
+                         items: items.map(item => ({
+                           productId: item.id,
+                           name: item.name,
+                           image: item.image,
+                           size: item.size,
+                           quantity: item.quantity,
+                           price: item.price,
+                         })),
+                         guestEmail: guestInfo.email,
+                         guestName: guestInfo.fullName,
+                         guestPhone: guestInfo.phone,
+                         shippingAddress: {
+                           address: guestInfo.address,
+                           city: guestInfo.city,
+                           postalCode: guestInfo.county,
+                           country: 'Kenya',
+                         },
+                         paymentReference: response.reference,
+                         itemsPrice: subtotal,
+                         shippingPrice: shipping_fee,
+                         totalPrice: total,
+                       }
+
+                       const res = await API.post('/api/orders/guest', guestOrderData)
+                       console.log('Guest order created:', res.data)
+                       setPaymentStatus('success')
+                       // Clear guest cart from localStorage
+                       localStorage.removeItem('guest_cart')
+                       const orderId = res.data?.orderId
+                       setTimeout(() => {
+                         navigate(`/guest-order-confirmation?orderId=${orderId}&email=${encodeURIComponent(guestInfo.email)}`)
+                       }, 1500)
+                       return
+                     }
+
+                     // User checkout flow
+                     const res = await API.post('/api/payments/paystack/create-order', orderData)
                      console.log('Order created:', res.data)
                      setPaymentStatus('success')
                      // Clear cart and redirect to orders page

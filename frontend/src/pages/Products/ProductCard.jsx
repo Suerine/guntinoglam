@@ -2,8 +2,6 @@ import { FiHeart } from "react-icons/fi"
 import { useState, useContext } from "react"
 import { CartContext } from "../../context/CartContext"
 import { WishlistContext } from "../../context/WishlistContext"
-import toast from "react-hot-toast"
-import WishlistToast from '../../components/ui/WishlistToast'
 
 
 function ProductCard({ product }) {
@@ -67,10 +65,8 @@ function ProductCard({ product }) {
               try {
                 if (isInWishlist) {
                   await removeFromWishlist(product._id)
-                  toast((t) => <WishlistToast product={product} removed={true} />)
                 } else {
                   await addToWishlist(product)
-                  toast((t) => <WishlistToast product={product} removed={false} />)
                 }
               } finally {
                 setLoading(false)

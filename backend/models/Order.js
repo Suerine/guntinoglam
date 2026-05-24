@@ -16,14 +16,26 @@ const orderItemSchema = new mongoose.Schema(
     isRental: { type: Boolean, default: false },
     rentalStartDate: { type: Date },
     rentalEndDate: { type: Date },
-    rentalDuration: { type: String, enum: ["daily", "weekly", "event"] },
+    rentalDuration: { type: String, enum: ["daily", "weekly", "event", null] },
   },
   { _id: false },
 );
 
 const orderSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    // User or Guest
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
+
+    // Guest checkout fields
+    isGuest: { type: Boolean, default: false },
+    guestEmail: { type: String, trim: true, lowercase: true },
+    guestName: { type: String, trim: true },
+    guestPhone: { type: String, trim: true },
+    orderId: { type: String, unique: true, sparse: true }, // e.g., "GG-20260524-ABC123"
 
     orderItems: [orderItemSchema],
 
@@ -36,7 +48,7 @@ const orderSchema = new mongoose.Schema(
 
     paymentMethod: {
       type: String,
-      enum: ["mpesa", "card", "cash_on_delivery"],
+      enum: ["mpesa", "card", "cash_on_delivery", "paystack"],
       required: true,
     },
     paymentResult: {

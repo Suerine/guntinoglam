@@ -206,74 +206,54 @@ const CartPage = () => {
 
               {!user && (
                 <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.8rem', letterSpacing: '0.1em', color: 'rgba(0,0,0,0.4)', textAlign: 'center', marginBottom: '1rem' }}>
-                  <Link to="/login" style={{ color: '#191A23', textDecoration: 'underline' }}>Log in</Link> to save your cart and checkout
+                  <Link to="/login" style={{ color: '#191A23', textDecoration: 'underline' }}>Log in</Link> to save cart or continue as guest
                 </p>
               )}
 
-              {user ? (
-                <Link
-                  to="/checkout"
-                  style={{
-                    display: 'block',
-                    textAlign: 'center',
-                    fontFamily: 'Montserrat, sans-serif',
-                    fontSize: '0.6rem',
-                    letterSpacing: '0.3em',
-                    textTransform: 'uppercase',
-                    color: '#fff',
-                    background: '#191A23',
-                    textDecoration: 'none',
-                    padding: '1rem',
-                    transition: 'background 0.25s ease',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#000'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#191A23'}
-                >
-                  Proceed to Checkout →
-                </Link>
-              ) : (
-                <button disabled style={{
+              <Link
+                to="/checkout"
+                style={{
                   display: 'block',
-                  width: '100%',
+                  textAlign: 'center',
                   fontFamily: 'Montserrat, sans-serif',
                   fontSize: '0.6rem',
                   letterSpacing: '0.3em',
                   textTransform: 'uppercase',
                   color: '#fff',
                   background: '#191A23',
-                  border: 'none',
-                  padding: '1rem',
-                  opacity: 0.4,
-                  cursor: 'not-allowed',
-                }}>
-                  Proceed to Checkout
-                </button>
-              )}
-
-              <Link
-                to="/products"
-                style={{
-                  display: 'block',
-                  textAlign: 'center',
-                  fontFamily: 'Montserrat, sans-serif',
-                  fontSize: '0.7rem',
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(0,0,0,0.3)',
                   textDecoration: 'none',
-                  marginTop: '1rem',
-                  transition: 'color 0.2s ease',
+                  padding: '1rem',
+                  transition: 'background 0.25s ease',
+                  marginBottom: '0.75rem',
                 }}
-                onMouseEnter={e => e.currentTarget.style.color = '#191A23'}
-                onMouseLeave={e => e.currentTarget.style.color = 'rgba(0,0,0,0.3)'}
+                onMouseEnter={e => e.currentTarget.style.background = '#000'}
+                onMouseLeave={e => e.currentTarget.style.background = '#191A23'}
               >
-                Continue Shopping →
+                Proceed to Checkout →
               </Link>
+              <Link
+               to="/products"
+               style={{
+                 display: 'block',
+                 textAlign: 'center',
+                 fontFamily: 'Montserrat, sans-serif',
+                 fontSize: '0.7rem',
+                 letterSpacing: '0.2em',
+                 textTransform: 'uppercase',
+                 color: 'rgba(0,0,0,0.3)',
+                 textDecoration: 'none',
+                 marginTop: '1rem',
+                 transition: 'color 0.2s ease',
+               }}
+               onMouseEnter={e => e.currentTarget.style.color = '#191A23'}
+               onMouseLeave={e => e.currentTarget.style.color = 'rgba(0,0,0,0.3)'}
+             >
+               Continue Shopping →
+             </Link>
             </div>
           </div>
-
+         </div>
         </div>
-      </div>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import Home from "../pages/Home/Home";
 import Layout from "../components/layout/Layout";
 import Products from "../pages/Products/Products";
 import Checkout from "../pages/Shop/Checkout";
+import GuestOrderConfirmation from "../pages/Shop/GuestOrderConfirmation";
 import Orders from "../pages/Shop/Orders"
 import Profile from "../pages/Profile/Profile"
 import ProtectedRoute from "../pages/Auth/ProtectedRoutes"
@@ -32,7 +33,8 @@ const AppRoutes = () => {
         <Route path="/products/:id" element={<ProductPage />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/guest-order-confirmation" element={<GuestOrderConfirmation />} />
         <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/wishlist" element={<Wishlist />} />

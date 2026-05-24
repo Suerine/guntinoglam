@@ -27,7 +27,7 @@ const CardsSection = ({ isMobile }) => {
         <Link to={`/products?collection=${card.collection}`} className="block w-full h-full">
           <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          <div className="absolute bottom-6 right-6 text-right">
+          <div className="absolute top-1/2 -translate-y-1/2 right-6 text-right">
             <h2 className="text-white text-xl font-light tracking-widest">{card.title}</h2>
             <p className="text-white/80 text-xs tracking-widest mt-1 relative inline-block">
               {card.description}
