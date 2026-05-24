@@ -83,6 +83,8 @@ const ProductPage = () => {
   const displayPrice = product.price
   const originalPrice = product.originalPrice
 
+  const isOutOfStock = product.sizes?.length > 0 && product.sizes.every(s => s.stock === 0)
+
   // Generate SEO schemas
   const productSchema = generateProductSchema(product)
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -184,12 +186,20 @@ const ProductPage = () => {
                   className="w-full h-full object-cover transition-all duration-500"
                 />
                 
-                {/* Discount badge */}
-                {discountPercentage > 0 && (
-                  <div className="absolute top-4 right-4 bg-pink-500 text-white prod-dm font-bold px-3 py-1 text-sm">
-                    -{discountPercentage}%
-                  </div>
-                )}
+                <div className="absolute top-4 right-4 flex flex-col gap-2 items-end z-10">
+                  {/* Discount badge */}
+                  {discountPercentage > 0 && (
+                    <div className="bg-pink-500 text-white prod-dm font-bold px-3 py-1 text-sm shadow-md">
+                      -{discountPercentage}%
+                    </div>
+                  )}
+                  {/* Out of Stock badge */}
+                  {isOutOfStock && (
+                    <div className="bg-red-600 text-white prod-dm font-bold px-3 py-1 text-sm tracking-widest shadow-md">
+                      OUT OF STOCK
+                    </div>
+                  )}
+                </div>
 
                 {/* Collection badge */}
                 {product.collection && (
@@ -377,14 +387,14 @@ const ProductPage = () => {
                     setCartLoading(false)
                   }
                 }}
-                disabled={cartLoading}
-                className="w-full py-4 bg-black text-white prod-dm font-bold text-base
+                disabled={cartLoading || isOutOfStock}
+                className={`w-full py-4 text-white prod-dm font-bold text-base
                   flex items-center justify-center gap-2
-                  hover:bg-gray-900 transition-all duration-200
-                  disabled:opacity-50 disabled:cursor-not-allowed "
+                  transition-all duration-200
+                  ${isOutOfStock ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"}`}
               >
                 <FiShoppingCart className="w-5 h-5" />
-                {cartLoading ? "Adding..." : "Add to Cart"}
+                {isOutOfStock ? "Out of Stock" : (cartLoading ? "Adding..." : "Add to Cart")}
               </button>
 
               <a

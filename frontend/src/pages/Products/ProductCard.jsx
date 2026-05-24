@@ -12,6 +12,8 @@ function ProductCard({ product }) {
   const image1 = product.images?.[0]
   const image2 = product.images?.[1] || image1
 
+  const isOutOfStock = product.sizes?.length > 0 && product.sizes.every(s => s.stock === 0)
+
   const { addToCart } = useContext(CartContext)
   const { wishlist, addToWishlist, removeFromWishlist } = useContext(WishlistContext)
   const isInWishlist = wishlist.some(item => item._id === product._id)
@@ -54,6 +56,27 @@ function ProductCard({ product }) {
             inset: 0,
             background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)',
           }} />
+
+          {/* Out of stock badge */}
+          {isOutOfStock && (
+            <div style={{
+              position: 'absolute',
+              top: '0.75rem',
+              left: '0.75rem',
+              background: 'rgba(220,38,38,0.9)',
+              backdropFilter: 'blur(4px)',
+              color: '#fff',
+              padding: '0.25rem 0.75rem',
+              borderRadius: '999px',
+              fontFamily: 'Montserrat, sans-serif',
+              fontSize: '0.45rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              zIndex: 10,
+            }}>
+              Out of stock
+            </div>
+          )}
 
           {/* Wishlist button */}
           <button
@@ -144,30 +167,31 @@ function ProductCard({ product }) {
               onClick={async (e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                if (cartLoading) return
+                if (isOutOfStock || cartLoading) return
                 setCartLoading(true)
                 try { await addToCart(product); }
                 finally { setCartLoading(false) }
               }}
+              disabled={isOutOfStock}
               style={{
                 fontFamily: 'Montserrat, sans-serif',
                 fontSize: '0.55rem',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: '#fff',
+                color: isOutOfStock ? 'rgba(255,255,255,0.5)' : '#fff',
                 border: '1px solid rgba(255,255,255,0.35)',
-                background: 'rgba(255,255,255,0.1)',
+                background: isOutOfStock ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.1)',
                 padding: '0.5rem 1rem',
                 borderRadius: '999px',
-                cursor: 'pointer',
+                cursor: isOutOfStock ? 'not-allowed' : 'pointer',
                 whiteSpace: 'nowrap',
                 backdropFilter: 'blur(6px)',
                 transition: 'all 0.25s ease',
-                opacity: hovered ? 1 : 0,
-                transform: hovered ? 'translateY(0)' : 'translateY(6px)',
+                opacity: hovered || isOutOfStock ? 1 : 0,
+                transform: hovered || isOutOfStock ? 'translateY(0)' : 'translateY(6px)',
               }}
             >
-              {cartLoading ? '...' : 'Add to cart'}
+              {isOutOfStock ? 'Out of stock' : (cartLoading ? '...' : 'Add to cart')}
             </button>
           </div>
         </div>
