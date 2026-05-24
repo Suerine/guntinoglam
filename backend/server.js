@@ -42,7 +42,12 @@ const corsOptions = {
     // Allow server-to-server, curl, Postman, mobile apps
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.startsWith("http://192.168.") ||
+      origin.startsWith("http://10.") ||
+      origin.includes("guntinoglam")
+    ) {
       callback(null, true);
     } else {
       console.log("⚠️ CORS blocked request from:", origin);
@@ -50,7 +55,6 @@ const corsOptions = {
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
 
