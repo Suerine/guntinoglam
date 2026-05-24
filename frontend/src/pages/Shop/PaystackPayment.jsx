@@ -53,7 +53,7 @@ const PaystackPayment = ({ email, amount, onSuccess, onClose, metadata }) => {
           padding: '0.75rem',
           marginBottom: '0.5rem',
           backgroundColor: '#fee',
-          color: '#c33',
+          color: 'rgba(201, 38, 38, 1)',
           borderRadius: '4px',
           fontSize: '0.85rem',
           textAlign: 'center',
