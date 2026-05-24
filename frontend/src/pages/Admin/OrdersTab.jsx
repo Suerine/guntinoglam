@@ -124,16 +124,16 @@ const OrderModal = ({ order, onClose, onStatusChange }) => {
 
           {/* Customer */}
           <div style={{ background: 'rgba(0,0,0,0.02)', padding: '1rem', border: '1px solid rgba(0,0,0,0.04)' }}>
-            <p style={{ ...labelStyle, marginBottom: '0.5rem' }}>Customer</p>
+            <p style={{ ...labelStyle, marginBottom: '0.5rem' }}>Customer {order.isGuest && "(Guest)"}</p>
             <p style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '1.05rem', color: '#191A23' }}>
-              {order.user?.name || "—"}
+              {order.isGuest ? (order.guestName || "Guest User") : (order.user?.name || "—")}
             </p>
             <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.6rem', color: 'rgba(0,0,0,0.4)', marginTop: '0.2rem' }}>
-              {order.user?.email || ""}
+              {order.isGuest ? (order.guestEmail || "") : (order.user?.email || "")}
             </p>
-            {order.user?.phone && (
+            {(order.isGuest ? order.guestPhone : order.user?.phone) && (
               <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.6rem', color: 'rgba(0,0,0,0.4)', marginTop: '0.15rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                <FiPhone style={{ fontSize: '0.5rem' }} /> {order.user.phone}
+                <FiPhone style={{ fontSize: '0.5rem' }} /> {order.isGuest ? order.guestPhone : order.user.phone}
               </p>
             )}
           </div>
@@ -400,8 +400,13 @@ const OrdersTab = () => {
                   >
                     <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: '0.6rem', color: 'rgba(0,0,0,0.35)' }}>#{order._id.slice(-6).toUpperCase()}</td>
                     <td style={tdStyle}>
-                      <p style={{ fontWeight: 500, color: '#191A23', fontSize: '0.7rem' }}>{order.user?.name || "—"}</p>
-                      <p style={{ fontSize: '0.55rem', color: 'rgba(0,0,0,0.3)', marginTop: '0.1rem' }}>{order.user?.email || ""}</p>
+                      <p style={{ fontWeight: 500, color: '#191A23', fontSize: '0.7rem' }}>
+                        {order.isGuest ? (order.guestName || "Guest User") : (order.user?.name || "—")}
+                        {order.isGuest && <span style={{ marginLeft: '4px', fontSize: '0.55rem', color: 'rgba(0,0,0,0.3)', fontWeight: 'normal' }}>(Guest)</span>}
+                      </p>
+                      <p style={{ fontSize: '0.55rem', color: 'rgba(0,0,0,0.3)', marginTop: '0.1rem' }}>
+                        {order.isGuest ? (order.guestEmail || "") : (order.user?.email || "")}
+                      </p>
                     </td>
                     <td style={tdStyle}>{order.orderItems?.length || 0}</td>
                     <td style={{ ...tdStyle, fontFamily: '"Cormorant Garamond", serif', fontSize: '0.95rem', color: '#191A23' }}>
