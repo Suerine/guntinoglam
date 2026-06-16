@@ -1,6 +1,7 @@
 import React from "react"
 
-const CartToast = ({ product, selectedSize, selectedColor }) => {
+const CartToast = ({ product, selectedSize, selectedColor, formatPrice, currency }) => {
+
   return (
     <div style={{
       display: 'flex',
@@ -90,10 +91,10 @@ const CartToast = ({ product, selectedSize, selectedColor }) => {
           color: '#191A23',
           fontWeight: 500,
         }}>
-          KSh {product.price?.toLocaleString()}
+          {formatPrice(product.price)}
           {product.isRentable && product.rentalPrice && (
             <span style={{ color: 'rgba(0,0,0,0.35)', fontWeight: 300, marginLeft: '0.4rem', fontStyle: 'italic' }}>
-              · Rent KSh {product.rentalPrice?.toLocaleString()}
+              · Rent {formatPrice(product.rentalPrice)}
             </span>
           )}
         </span>

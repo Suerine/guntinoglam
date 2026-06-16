@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async"
 import API from "../../api/axios"
 import ProductCard from "./ProductCard"
 import { CartContext } from "../../context/CartContext"
+import { CurrencyContext } from "../../context/CurrencyContext"
 import { getWhatsAppLink } from "../../utils/helper"
 import { FaWhatsapp } from "react-icons/fa"
 import { FiShoppingCart, FiChevronRight, FiHeart, FiStar } from "react-icons/fi"
@@ -24,6 +25,7 @@ const ProductPage = () => {
 
   const { addToCart } = useContext(CartContext)
   const { wishlist, addToWishlist, removeFromWishlist } = useContext(WishlistContext)
+  const { formatPrice } = useContext(CurrencyContext)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -271,11 +273,11 @@ const ProductPage = () => {
             <div className="space-y-2">
               <div className="flex items-end gap-3">
                 <p className="font-montserrat text-4xl sm:text-5xl font-medium text-black">
-                  KSh {displayPrice?.toLocaleString()}
+                  {formatPrice(displayPrice)}
                 </p>
                 {originalPrice && originalPrice > displayPrice && (
                   <p className="prod-dm text-lg text-gray-400 line-through">
-                    KSh {originalPrice.toLocaleString()}
+                    {formatPrice(originalPrice)}
                   </p>
                 )}
               </div>
@@ -288,7 +290,7 @@ const ProductPage = () => {
                   Available for Rent
                 </p>
                 <p className="prod-dm text-sm text-white">
-                  KSh {product.rentalPrice?.toLocaleString()} per {product.rentalDuration}
+                  {formatPrice(product.rentalPrice)} per {product.rentalDuration}
                 </p>
               </div>
             )}

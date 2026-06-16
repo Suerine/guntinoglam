@@ -1,12 +1,14 @@
 import { useContext } from "react"
 import { CartContext } from "../../context/CartContext"
 import { AuthContext } from "../../context/AuthContext"
+import { CurrencyContext } from "../../context/CurrencyContext"
 import { Link } from "react-router-dom"
 import { FiShoppingCart } from "react-icons/fi"
 
 const CartCard = () => {
   const { cart } = useContext(CartContext)
   const { user } = useContext(AuthContext)
+  const { formatPrice } = useContext(CurrencyContext)
 
   const normalizeItem = (item) => {
     if (!user) {
@@ -171,7 +173,7 @@ const CartCard = () => {
               color: '#191A23',
               flexShrink: 0,
             }}>
-              KSh {(item.price * item.quantity).toLocaleString()}
+              {formatPrice(item.price * item.quantity)}
             </p>
           </div>
         ))}
@@ -199,7 +201,7 @@ const CartCard = () => {
             fontWeight: 300,
             color: '#191A23',
           }}>
-            KSh {total.toLocaleString()}
+            {formatPrice(total)}
           </p>
         </div>
 

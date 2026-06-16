@@ -76,6 +76,110 @@ const CheckoutPage = () => {
     setStep(2)
   }
 
+  const handlePayOnDelivery = async (e) => {
+    e.preventDefault()
+    
+    if (!shipping.address || !shipping.city) {
+      alert('Please complete your shipping address first')
+      return
+    }
+
+    setPaymentLoading(true)
+    setPaymentStatus("pending")
+
+    try {
+      const orderData = {
+        items: items.map(item => ({
+          productId: item.id,
+          name: item.name,
+          image: item.image,
+          size: item.size,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        shippingAddress: {
+          address: shipping.address,
+          city: shipping.city,
+          postalCode: shipping.county,
+          country: 'Kenya',
+        },
+        paymentMethod: 'cash_on_delivery',
+        itemsPrice: subtotal,
+        shippingPrice: shipping_fee,
+        totalPrice: total,
+      }
+
+      const res = await API.post('/api/orders', orderData)
+      console.log('COD Order created:', res.data)
+      setPaymentStatus('success')
+      await clearCart()
+      const orderId = res.data?.order?._id
+      setTimeout(() => {
+        navigate(`/orders?success=true${orderId ? `&orderId=${orderId}` : ''}`)
+      }, 1500)
+    } catch (err) {
+      console.error('Order creation error:', err.response?.data || err.message)
+      setPaymentError(err.response?.data?.message || err.message || 'Failed to create order')
+      setPaymentStatus('failed')
+    } finally {
+      setPaymentLoading(false)
+    }
+  }
+
+  const handleGuestPayOnDelivery = async (e) => {
+    e.preventDefault()
+
+    if (!guestInfo.address || !guestInfo.city) {
+      alert('Please complete your shipping address first')
+      return
+    }
+
+    setPaymentLoading(true)
+    setPaymentStatus("pending")
+
+    try {
+      const guestOrderData = {
+        items: items.map(item => ({
+          productId: item.id,
+          name: item.name,
+          image: item.image,
+          size: item.size,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        guestEmail: guestInfo.email,
+        guestName: guestInfo.fullName,
+        guestPhone: guestInfo.phone,
+        shippingAddress: {
+          address: guestInfo.address,
+          city: guestInfo.city,
+          postalCode: guestInfo.county,
+          country: 'Kenya',
+        },
+        paymentMethod: 'cash_on_delivery',
+        itemsPrice: subtotal,
+        shippingPrice: shipping_fee,
+        totalPrice: total,
+      }
+
+      console.log("📮 Sending Guest COD Order Data:", guestOrderData)
+      const res = await API.post('/api/orders/guest', guestOrderData)
+      console.log('Guest COD Order created:', res.data)
+      setPaymentStatus('success')
+      localStorage.removeItem('guest_cart')
+      const orderId = res.data?.orderId
+      setTimeout(() => {
+        navigate(`/guest-order-confirmation?orderId=${orderId}&email=${encodeURIComponent(guestInfo.email)}`)
+      }, 1500)
+    } catch (err) {
+      console.error('Order creation error:', err.response?.data || err.message)
+      setPaymentError(err.response?.data?.message || err.message || 'Failed to create order')
+      setPaymentStatus('failed')
+    } finally {
+      setPaymentLoading(false)
+    }
+  }
+
   const handleMpesaPayment = async (e) => {
     e.preventDefault()
     if (!mpesaPhone) return
@@ -274,99 +378,150 @@ const CheckoutPage = () => {
                  </p>
                </div>
 
-               <PaystackPayment
-                 email={user?.email || guestInfo.email}
-                 amount={total}
-                 metadata={{ shipping: user ? shipping : guestInfo, items: items.map(i => ({ name: i.name, quantity: i.quantity })) }}
-                 onSuccess={async (response) => {
-                   setPaymentStatus('pending')
-                   setPaymentError(null)
-                   try {
-                     console.log('Payment response:', response)
+               {/* Payment Options */}
+               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                 {/* Paystack Payment */}
+                 <div>
+                   <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.3)', marginBottom: '0.75rem' }}>
+                     Pay Online with Card
+                   </p>
+                   <PaystackPayment
+                     email={user?.email || guestInfo.email}
+                     amount={total}
+                     metadata={{ shipping: user ? shipping : guestInfo, items: items.map(i => ({ name: i.name, quantity: i.quantity })) }}
+                     onSuccess={async (response) => {
+                       setPaymentStatus('pending')
+                       setPaymentError(null)
+                       try {
+                         console.log('Payment response:', response)
 
-                     // Prepare order data
-                     const orderData = {
-                       reference: response.reference,
-                       items: items.map(item => ({
-                         productId: item.id,
-                         name: item.name,
-                         image: item.image,
-                         size: item.size,
-                         quantity: item.quantity,
-                         price: item.price,
-                       })),
-                       shippingAddress: user ? {
-                         address: shipping.address,
-                         city: shipping.city,
-                         postalCode: shipping.county,
-                         country: 'Kenya',
-                       } : {
-                         address: guestInfo.address,
-                         city: guestInfo.city,
-                         postalCode: guestInfo.county,
-                         country: 'Kenya',
-                       },
-                       itemsPrice: subtotal,
-                       shippingPrice: shipping_fee,
-                       totalPrice: total,
-                     }
+                         // Prepare order data
+                         const orderData = {
+                           reference: response.reference,
+                           items: items.map(item => ({
+                             productId: item.id,
+                             name: item.name,
+                             image: item.image,
+                             size: item.size,
+                             quantity: item.quantity,
+                             price: item.price,
+                           })),
+                           shippingAddress: user ? {
+                             address: shipping.address,
+                             city: shipping.city,
+                             postalCode: shipping.county,
+                             country: 'Kenya',
+                           } : {
+                             address: guestInfo.address,
+                             city: guestInfo.city,
+                             postalCode: guestInfo.county,
+                             country: 'Kenya',
+                           },
+                           itemsPrice: subtotal,
+                           shippingPrice: shipping_fee,
+                           totalPrice: total,
+                         }
 
-                     // Guest checkout flow
-                     if (!user) {
-                       const guestOrderData = {
-                         items: items.map(item => ({
-                           productId: item.id,
-                           name: item.name,
-                           image: item.image,
-                           size: item.size,
-                           quantity: item.quantity,
-                           price: item.price,
-                         })),
-                         guestEmail: guestInfo.email,
-                         guestName: guestInfo.fullName,
-                         guestPhone: guestInfo.phone,
-                         shippingAddress: {
-                           address: guestInfo.address,
-                           city: guestInfo.city,
-                           postalCode: guestInfo.county,
-                           country: 'Kenya',
-                         },
-                         paymentReference: response.reference,
-                         itemsPrice: subtotal,
-                         shippingPrice: shipping_fee,
-                         totalPrice: total,
+                         // Guest checkout flow
+                         if (!user) {
+                           const guestOrderData = {
+                             items: items.map(item => ({
+                               productId: item.id,
+                               name: item.name,
+                               image: item.image,
+                               size: item.size,
+                               quantity: item.quantity,
+                               price: item.price,
+                             })),
+                             guestEmail: guestInfo.email,
+                             guestName: guestInfo.fullName,
+                             guestPhone: guestInfo.phone,
+                             shippingAddress: {
+                               address: guestInfo.address,
+                               city: guestInfo.city,
+                               postalCode: guestInfo.county,
+                               country: 'Kenya',
+                             },
+                             paymentReference: response.reference,
+                             itemsPrice: subtotal,
+                             shippingPrice: shipping_fee,
+                             totalPrice: total,
+                           }
+
+                           const res = await API.post('/api/orders/guest', guestOrderData)
+                           console.log('Guest order created:', res.data)
+                           setPaymentStatus('success')
+                           // Clear guest cart from localStorage
+                           localStorage.removeItem('guest_cart')
+                           const orderId = res.data?.orderId
+                           setTimeout(() => {
+                             navigate(`/guest-order-confirmation?orderId=${orderId}&email=${encodeURIComponent(guestInfo.email)}`)
+                           }, 1500)
+                           return
+                         }
+
+                         // User checkout flow
+                         const res = await API.post('/api/payments/paystack/create-order', orderData)
+                         console.log('Order created:', res.data)
+                         setPaymentStatus('success')
+                         // Clear cart and redirect to orders page
+                         await clearCart()
+                         const orderId = res.data?.order?._id
+                         setTimeout(() => {
+                           navigate(`/orders?success=true${orderId ? `&orderId=${orderId}` : ''}`)
+                         }, 1500)
+                       } catch (err) {
+                         console.error('Order creation error:', err.response?.data || err.message)
+                         setPaymentError(err.response?.data?.message || err.message || 'Failed to create order')
+                         setPaymentStatus('failed')
                        }
+                     }}
+                     onClose={() => console.log('Payment closed')}
+                   />
+                 </div>
 
-                       const res = await API.post('/api/orders/guest', guestOrderData)
-                       console.log('Guest order created:', res.data)
-                       setPaymentStatus('success')
-                       // Clear guest cart from localStorage
-                       localStorage.removeItem('guest_cart')
-                       const orderId = res.data?.orderId
-                       setTimeout(() => {
-                         navigate(`/guest-order-confirmation?orderId=${orderId}&email=${encodeURIComponent(guestInfo.email)}`)
-                       }, 1500)
-                       return
+                 {/* Divider */}
+                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                   <div style={{ flex: 1, height: '1px', background: 'rgba(0,0,0,0.1)' }} />
+                   <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)' }}>OR</p>
+                   <div style={{ flex: 1, height: '1px', background: 'rgba(0,0,0,0.1)' }} />
+                 </div>
+
+                 {/* Pay on Delivery Button */}
+                 <button
+                   onClick={user ? handlePayOnDelivery : handleGuestPayOnDelivery}
+                   disabled={paymentLoading}
+                   style={{
+                     fontFamily: 'Montserrat, sans-serif',
+                     fontSize: '0.65rem',
+                     letterSpacing: '0.3em',
+                     textTransform: 'uppercase',
+                     color: '#fff',
+                     background: '#191A23',
+                     border: '1px solid #191A23',
+                     padding: '0.85rem 1.5rem',
+                     cursor: paymentLoading ? 'not-allowed' : 'pointer',
+                     transition: 'all 0.25s ease',
+                     opacity: paymentLoading ? 0.6 : 1,
+                     width: '100%',
+                   }}
+                   onMouseEnter={(e) => {
+                     if (!paymentLoading) {
+                       e.target.style.background = '#000'
                      }
-
-                     // User checkout flow
-                     const res = await API.post('/api/payments/paystack/create-order', orderData)
-                     console.log('Order created:', res.data)
-                     setPaymentStatus('success')
-                     // Clear cart and redirect to orders page
-                     await clearCart()
-                     const orderId = res.data?.order?._id
-                     setTimeout(() => {
-                       navigate(`/orders?success=true${orderId ? `&orderId=${orderId}` : ''}`)
-                     }, 1500)
-                   } catch (err) {
-                     console.error('Order creation error:', err.response?.data || err.message)
-                     setPaymentError(err.response?.data?.message || err.message || 'Failed to create order')
-                     setPaymentStatus('failed')
-                   }
-                 }}
-                 onClose={() => console.log('Payment closed')}
-               />
+                   }}
+                   onMouseLeave={(e) => {
+                     if (!paymentLoading) {
+                       e.target.style.background = '#191A23'
+                     }
+                   }}
+                 >
+                   {paymentLoading ? 'Processing...' : 'Pay on Delivery'}
+                 </button>
+                 <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.5rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.25)', textAlign: 'center' }}>
+                   Pay when you receive your order
+                 </p>
+               </div>
              </div>
            )}
           </div>

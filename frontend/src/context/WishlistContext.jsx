@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react"
 import API from "../api/axios"
 import { AuthContext } from "./AuthContext"
+import { CurrencyContext } from "./CurrencyContext"
 import toast from "react-hot-toast"
 import WishlistToast from "../components/ui/WishlistToast"
 
@@ -13,6 +14,7 @@ const clearGuestWishlist = () => localStorage.removeItem(GUEST_WISHLIST_KEY)
 
 export const WishlistProvider = ({ children }) => {
   const { user } = useContext(AuthContext)
+  const { formatPrice } = useContext(CurrencyContext)
   const [wishlist, setWishlist] = useState([])
   const [loading, setLoading] = useState(false)
   const [operationInProgress, setOperationInProgress] = useState(false)
@@ -49,7 +51,7 @@ export const WishlistProvider = ({ children }) => {
               boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
               padding: '1rem',
             }}>
-              <WishlistToast product={product} removed={false} />
+              <WishlistToast product={product} removed={false} formatPrice={formatPrice} />
             </div>
           ), { duration: 2000 })
         }
@@ -70,7 +72,7 @@ export const WishlistProvider = ({ children }) => {
           boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
           padding: '1rem',
         }}>
-          <WishlistToast product={product} removed={false} />
+          <WishlistToast product={product} removed={false} formatPrice={formatPrice} />
         </div>
       ), { duration: 2000 })
 
@@ -104,7 +106,7 @@ export const WishlistProvider = ({ children }) => {
               boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
               padding: '1rem',
             }}>
-              <WishlistToast product={product} removed={true} />
+              <WishlistToast product={product} removed={true} formatPrice={formatPrice} />
             </div>
           ), { duration: 2000 })
         }
@@ -122,7 +124,7 @@ export const WishlistProvider = ({ children }) => {
             boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
             padding: '1rem',
           }}>
-            <WishlistToast product={product} removed={true} />
+            <WishlistToast product={product} removed={true} formatPrice={formatPrice} />
           </div>
         ), { duration: 2000 })
       }

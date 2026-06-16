@@ -2,6 +2,7 @@ import { FiHeart } from "react-icons/fi"
 import { useState, useContext } from "react"
 import { CartContext } from "../../context/CartContext"
 import { WishlistContext } from "../../context/WishlistContext"
+import { CurrencyContext } from "../../context/CurrencyContext"
 
 
 function ProductCard({ product }) {
@@ -16,6 +17,7 @@ function ProductCard({ product }) {
 
   const { addToCart } = useContext(CartContext)
   const { wishlist, addToWishlist, removeFromWishlist } = useContext(WishlistContext)
+  const { formatPrice } = useContext(CurrencyContext)
   const isInWishlist = wishlist.some(item => item._id === product._id)
 
   return (
@@ -154,10 +156,10 @@ function ProductCard({ product }) {
                  fontSize: '0.65rem',
                  color: 'rgba(255,255,255,0.7)',
                }}>
-                 KSh {product.price?.toLocaleString()}
+                 {formatPrice(product.price)}
                  {product.isRentable && product.rentalPrice && (
                    <span style={{ marginLeft: '0.5rem', color: 'rgba(255,236,247,0.6)', fontStyle: 'italic' }}>
-                     · Rent KSh {product.rentalPrice?.toLocaleString()}
+                     · Rent {formatPrice(product.rentalPrice)}
                    </span>
                  )}
                </p>
@@ -228,7 +230,7 @@ function ProductCard({ product }) {
               color: 'rgba(0,0,0,0.8)',
               letterSpacing: '0.05em',
             }}>
-              KSh {product.price?.toLocaleString()}
+              {formatPrice(product.price)}
             </p>
 
             {product.isRentable && product.rentalPrice && (
@@ -239,7 +241,7 @@ function ProductCard({ product }) {
                 letterSpacing: '0.05em',
                 fontStyle: 'italic',
               }}>
-                · Rent KSh {product.rentalPrice?.toLocaleString()}
+                · Rent {formatPrice(product.rentalPrice)}
               </p>
             )}
           </div>

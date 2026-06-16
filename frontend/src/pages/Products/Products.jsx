@@ -10,7 +10,7 @@ import { FilterTrigger } from "../../components/ui/FilterDrawer"
 import { Helmet } from 'react-helmet-async'
 import StonesGroupPic from "../../assets/images/1S0A6496.jpg"
 import MaqbalGroupPic from "../../assets/images/HeroImg5.jpg"
-import FaransawiGroupPic from "../../assets/images/1S0A6274.jpeg"
+import FaransawiGroupPic from "../../assets/images/HeroImage.jpg"
 import GuntinoGroupPic from "../../assets/images/1S0A6647.jpeg"
 
 
@@ -208,7 +208,8 @@ function Products() {
                 textTransform: 'uppercase',
                 color: 'rgba(0,0,0,0.6)',
                 background: '#FFF7FF',
-                border: '1px solid rgba(0,0,0,0.1)',
+                border: '1px solid rgba(0,0,0,0.17)',
+                borderRadius: '0px',
                 padding: '0.5rem 0.75rem',
                 cursor: 'pointer',
                 outline: 'none',
@@ -243,7 +244,7 @@ function Products() {
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-1">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i}>
-                  <div className="skeleton" style={{ aspectRatio: '3/4', width: '100%', borderRadius: '4px' }} />
+                  <div className="skeleton" style={{ aspectRatio: '3/4', width: '100%' }} />
                 </div>
               ))}
             </div>

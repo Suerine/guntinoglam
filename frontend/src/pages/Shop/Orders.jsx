@@ -340,6 +340,17 @@ const OrderCard = ({ order }) => {
           }}>
             KSh {order.totalPrice?.toLocaleString() || '0'}
           </p>
+          <p style={{
+            fontFamily: 'Montserrat, sans-serif',
+            fontSize: '0.65rem',
+            color: 'rgba(0,0,0,0.4)',
+            marginTop: '0.5rem',
+          }}>
+            Payment: {order.paymentMethod?.replace(/_/g, ' ').toUpperCase() || 'N/A'}
+            {!order.isPaid && order.paymentMethod === 'cash_on_delivery' && (
+              <span style={{ color: '#FF9800', fontWeight: 500 }}> (Pending)</span>
+            )}
+          </p>
         </div>
 
         <p style={{

@@ -98,9 +98,9 @@ export const createOrder = async (req, res) => {
       discount,
       couponCode: cart.couponCode || null,
       totalPrice,
-      isPaid: paymentMethod === "cash_on_delivery", // Assume COD is immediate
-      paidAt: paymentMethod === "cash_on_delivery" ? new Date() : null,
-      status: paymentMethod === "cash_on_delivery" ? "processing" : "pending",
+      isPaid: paymentMethod !== "cash_on_delivery", // Only paid if not COD
+      paidAt: paymentMethod !== "cash_on_delivery" ? new Date() : null,
+      status: "pending",
       customerNote: customerNote || null,
     });
 
@@ -132,10 +132,15 @@ export const createGuestOrder = async (req, res) => {
       guestPhone,
       shippingAddress,
       paymentReference,
+      paymentMethod,
       itemsPrice,
       shippingPrice,
       totalPrice,
     } = req.body;
+
+    console.log("📦 Guest Order Request Body:", req.body);
+    console.log("💳 Payment Method:", paymentMethod);
+    console.log("🔑 Payment Reference:", paymentReference);
 
     // Validate required fields
     if (
@@ -151,7 +156,8 @@ export const createGuestOrder = async (req, res) => {
         .json({ message: "Missing required guest checkout fields" });
     }
 
-    if (!paymentReference) {
+    // Payment reference is only required for non-COD orders
+    if (paymentMethod !== "cash_on_delivery" && !paymentReference) {
       return res.status(400).json({ message: "Payment reference is required" });
     }
 
@@ -205,6 +211,7 @@ export const createGuestOrder = async (req, res) => {
     }
 
     // Create guest order
+    const isCoD = paymentMethod === "cash_on_delivery";
     const order = await Order.create({
       isGuest: true,
       guestEmail,
@@ -213,18 +220,20 @@ export const createGuestOrder = async (req, res) => {
       orderId,
       orderItems,
       shippingAddress,
-      paymentMethod: "paystack",
+      paymentMethod: paymentMethod || "paystack",
       itemsPrice,
       shippingPrice: shippingPrice || 0,
       totalPrice,
-      isPaid: true,
-      paidAt: new Date(),
-      status: "processing",
-      paymentResult: {
-        transactionId: paymentReference,
-        status: "completed",
-        paidAt: new Date(),
-      },
+      isPaid: !isCoD, // Only paid if not COD
+      paidAt: !isCoD ? new Date() : null,
+      status: "pending",
+      paymentResult: !isCoD
+        ? {
+            transactionId: paymentReference,
+            status: "completed",
+            paidAt: new Date(),
+          }
+        : null,
     });
 
     // Send confirmation email

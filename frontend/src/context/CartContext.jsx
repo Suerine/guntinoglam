@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react"
 import API from "../api/axios"
 import { AuthContext } from "./AuthContext"
+import { CurrencyContext } from "./CurrencyContext"
 import toast from "react-hot-toast"
 import CartToast from "../components/ui/CartToast"
 
@@ -18,6 +19,7 @@ const getProductId = (product) =>
 
 export const CartProvider = ({ children }) => {
   const { user } = useContext(AuthContext)
+  const { formatPrice, currency } = useContext(CurrencyContext)
   const [cart, setCart] = useState(null)
   const [cartCount, setCartCount] = useState(0)
 
@@ -50,7 +52,7 @@ const addToCart = async (product, selectedSize, selectedColor) => {
         boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
         padding: '1rem',
       }}>
-        <CartToast product={product} selectedSize={size} selectedColor={color} />
+        <CartToast product={product} selectedSize={size} selectedColor={color} formatPrice={formatPrice} currency={currency} />
       </div>
     ))
   }

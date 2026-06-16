@@ -1,8 +1,8 @@
 import React from 'react'
 import { FiHeart } from 'react-icons/fi'
 
+const WishlistToast = ({ product, removed, formatPrice }) => {
 
-const WishlistToast = ({ product, removed }) => {
   return (
     <div style={{
       background: '#FFF7FF',
@@ -48,7 +48,7 @@ const WishlistToast = ({ product, removed }) => {
             marginTop: '0.2rem',
             letterSpacing: '0.05em',
           }}>
-            KSh {product.price?.toLocaleString()}
+            {formatPrice(product.price)}
           </p>
         )}
       </div>

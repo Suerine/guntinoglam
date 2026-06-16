@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import Home from "../pages/Home/Home";
 import Layout from "../components/layout/Layout";
 import Products from "../pages/Products/Products";
@@ -19,6 +20,8 @@ import RefundPolicy from "../pages/Info/RefundPolicy";
 import TermsOfService from "../pages/Info/TermsOfService";
 
 const AppRoutes = () => {
+  useScrollToTop()
+  
   return (
     <Routes>
       {/* Home — no Layout, it has its own Navbar + snap scroll */}

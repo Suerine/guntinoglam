@@ -7,9 +7,11 @@ import { FiMenu, FiX, FiShoppingCart, FiUser, FiSearch, FiHeart } from "react-ic
 import { CartContext } from "../../context/CartContext"
 import { AuthContext } from "../../context/AuthContext"
 import { WishlistContext } from "../../context/WishlistContext"
+import { CurrencyContext } from "../../context/CurrencyContext"
 import { useLocation } from "react-router-dom"
 import CartCard from "../ui/CartCard"
 import CurvedLoop from "../ui/CurvedLoop"
+import CurrencySwitcher from "../ui/CurrencySwitcher"
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -21,6 +23,7 @@ function Navbar() {
   const { user, logout } = useContext(AuthContext)
   const { cartCount } = useContext(CartContext)
   const { wishlist } = useContext(WishlistContext)
+  const { formatPrice } = useContext(CurrencyContext)
 
   const [query, setQuery] = useState("")
   const [results, setResults] = useState([])
@@ -199,6 +202,9 @@ function Navbar() {
             {/* Right side */}
             <div className="flex items-center gap-4 sm:gap-5 flex-1 justify-end">
 
+            {/* Currency Switcher */}
+            <CurrencySwitcher />
+
             {/* Wishlist */}
             <Link to="/wishlist" className="relative flex items-center justify-center w-8 h-8">
               <FiHeart className="w-5 h-5 text-black/60 hover:text-black" />
@@ -312,13 +318,14 @@ function Navbar() {
                       <img src={product.images[0]} alt={product.name} className="w-10 h-10 object-cover rounded-lg shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="text-white text-xs font-medium truncate" style={{ fontFamily: 'Montserrat, sans-serif' }}>{product.name}</p>
-                        <p className="text-pink-400 text-xs mt-0.5 tracking-wide">KSh {product.price}</p>
+                        <p className="text-pink-400 text-xs mt-0.5 tracking-wide">{formatPrice(product.price)}</p>
                       </div>
                     </Link>
                   ))}
                 </div>
               )}
             </div>
+
               {/* User */}
               <button
                 onClick={handleLoginClick}
@@ -369,6 +376,10 @@ function Navbar() {
                   {label}
                 </Link>
               ))}
+
+              <div className="w-full max-w-xs h-px bg-white/5" />
+
+              <CurrencySwitcher />
 
               <div className="w-full max-w-xs h-px bg-white/5" />
 
