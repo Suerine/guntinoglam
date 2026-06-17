@@ -35,6 +35,7 @@ const allowedOrigins = [
   "https://guntinoglam.vercel.app",
   "https://www.guntinoglam.com",
   "https://guntinoglam.com",
+  "https://guntinoglam-production.up.railway.app",
 ];
 
 const corsOptions = {
@@ -107,7 +108,7 @@ app.get("/api/debug-env", (req, res) => {
     cloud_name: !!process.env.CLOUDINARY_CLOUD_NAME,
     api_key: !!process.env.CLOUDINARY_API_KEY,
     api_secret: !!process.env.CLOUDINARY_API_SECRET,
-  })
-})
+  });
+});
 
 startServer();
