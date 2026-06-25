@@ -6,6 +6,7 @@ import ProductCard from "./ProductCard"
 import { CartContext } from "../../context/CartContext"
 import { CurrencyContext } from "../../context/CurrencyContext"
 import { getWhatsAppLink } from "../../utils/helper"
+import { getOptimizedImage } from "../../utils/imageOptimization"
 import { FaWhatsapp } from "react-icons/fa"
 import { FiShoppingCart, FiChevronRight, FiHeart, FiStar } from "react-icons/fi"
 import { WishlistContext } from "../../context/WishlistContext"
@@ -35,7 +36,7 @@ const ProductPage = () => {
         setSelectedImage(res.data.images?.[0])
         setSelectedColor(res.data.colors?.[0] || null)
         setSelectedSize(res.data.sizes?.[0]?.size || null)
-        const related = await API.get(`/api/products?category=${res.data.category}&limit=20`)
+        const related = await API.get(`/api/products?category=${res.data.category}&limit=8`)
         setRelatedProducts(related.data.products || [])
       } catch (error) {
         console.error(error)
@@ -174,7 +175,13 @@ const ProductPage = () => {
                   className={`shrink-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-20 lg:h-24 overflow-hidden border-2 transition-all duration-200
                     ${selectedImage === img ? "border-pink-500 scale-100" : "border-gray-200 opacity-60 hover:opacity-100"}`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  <img
+                    src={getOptimizedImage(img, { width: 200 })}
+                    alt={`Thumbnail ${index + 1}`}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
                 </button>
               ))}
             </div>
@@ -183,8 +190,11 @@ const ProductPage = () => {
             <div className="order-1 lg:order-2 flex-1">
               <div className="relative overflow-hidden bg-white aspect-[3/4] lg:aspect-auto lg:h-auto">
                 <img
-                  src={selectedImage}
+                  src={getOptimizedImage(selectedImage, { width: 1200 })}
                   alt={product.name}
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-cover transition-all duration-500"
                 />
                 

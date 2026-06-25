@@ -3,6 +3,7 @@ import { useState, useContext } from "react"
 import { CartContext } from "../../context/CartContext"
 import { WishlistContext } from "../../context/WishlistContext"
 import { CurrencyContext } from "../../context/CurrencyContext"
+import { getOptimizedImage } from "../../utils/imageOptimization"
 
 
 function ProductCard({ product }) {
@@ -10,8 +11,8 @@ function ProductCard({ product }) {
   const [cartLoading, setCartLoading] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const image1 = product.images?.[0]
-  const image2 = product.images?.[1] || image1
+  const image1 = getOptimizedImage(product.images?.[0], { width: 700 })
+  const image2 = getOptimizedImage(product.images?.[1] || product.images?.[0], { width: 700 })
 
   const isOutOfStock = product.sizes?.length > 0 && product.sizes.every(s => s.stock === 0)
 
@@ -42,6 +43,8 @@ function ProductCard({ product }) {
           <img
             src={hovered ? image2 : image1}
             alt={product.name}
+            loading="lazy"
+            decoding="async"
             style={{
               width: '100%',
               height: '100%',

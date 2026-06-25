@@ -3,51 +3,106 @@
  * Helps optimize images for better SEO and performance
  */
 
+const CLOUDINARY_NAME = import.meta.env.VITE_CLOUDINARY_NAME || "dtvn6rmeo";
+const CLOUDINARY_BASE_URL = `https://res.cloudinary.com/${CLOUDINARY_NAME}/image/upload/`;
+const CLOUDINARY_UPLOAD_SEGMENT = "/image/upload/";
+
+const createTransformationString = ({
+  width,
+  height,
+  quality = "auto",
+  format = "auto",
+  crop = "fill",
+  gravity = "auto",
+  radius,
+}) => {
+  return [
+    `q_${quality}`,
+    `f_${format}`,
+    width ? `w_${width}` : null,
+    height ? `h_${height}` : null,
+    crop ? `c_${crop}` : null,
+    gravity ? `g_${gravity}` : null,
+    radius ? `r_${radius}` : null,
+  ]
+    .filter(Boolean)
+    .join(",");
+};
+
+const normalizeCloudinaryUrl = (urlString, transformations) => {
+  try {
+    const url = new URL(urlString);
+    const uploadIndex = url.pathname.indexOf(CLOUDINARY_UPLOAD_SEGMENT);
+    if (uploadIndex === -1) return urlString;
+
+    const afterUpload = url.pathname.slice(
+      uploadIndex + CLOUDINARY_UPLOAD_SEGMENT.length,
+    );
+    const segments = afterUpload.split("/");
+    const firstSegment = segments[0] || "";
+    const isTransformSegment = ["q_", "f_", "w_", "h_", "c_", "g_", "r_"].some(
+      (prefix) => firstSegment.includes(prefix),
+    );
+    const rest = isTransformSegment ? segments.slice(1).join("/") : afterUpload;
+
+    url.pathname = `${url.pathname.slice(0, uploadIndex + CLOUDINARY_UPLOAD_SEGMENT.length)}${transformations}/${rest}`;
+    return url.toString();
+  } catch (error) {
+    return urlString;
+  }
+};
+
 /**
- * Generate optimized Cloudinary URL
- * @param {string} publicId - Cloudinary public ID
- * @param {object} options - Optimization options
+ * Generate optimized Cloudinary URL from either a full Cloudinary URL or a public ID.
  */
-export const getOptimizedImage = (publicId, options = {}) => {
-  if (!publicId) return null;
+export const getOptimizedImage = (publicIdOrUrl, options = {}) => {
+  if (!publicIdOrUrl) return null;
 
   const {
     width = 800,
-    height = 1000,
+    height,
     quality = "auto",
     format = "auto",
     crop = "fill",
     gravity = "auto",
-    radius = "max",
+    radius,
   } = options;
 
-  const baseUrl = "https://res.cloudinary.com/your-cloud-name/image/upload/";
+  const transformations = createTransformationString({
+    width,
+    height,
+    quality,
+    format,
+    crop,
+    gravity,
+    radius,
+  });
 
-  const transformations = [
-    `q_${quality}`,
-    `f_${format}`,
-    `w_${width}`,
-    `h_${height}`,
-    `c_${crop}`,
-    `g_${gravity}`,
-  ].join(",");
+  if (
+    typeof publicIdOrUrl === "string" &&
+    publicIdOrUrl.includes(CLOUDINARY_UPLOAD_SEGMENT)
+  ) {
+    return normalizeCloudinaryUrl(publicIdOrUrl, transformations);
+  }
 
-  return `${baseUrl}${transformations}/${publicId}`;
+  return `${CLOUDINARY_BASE_URL}${transformations}/${publicIdOrUrl}`;
 };
 
 /**
  * Generate responsive srcset for images
  */
-export const getImageSrcSet = (publicId, alt = "") => {
-  if (!publicId) return { src: "", srcSet: "" };
+export const getImageSrcSet = (publicIdOrUrl, alt = "") => {
+  if (!publicIdOrUrl) return { src: "", srcSet: "" };
 
   const sizes = [400, 600, 800, 1000, 1200];
   const srcSet = sizes
-    .map((size) => `${getOptimizedImage(publicId, { width: size })} ${size}w`)
+    .map(
+      (size) => `${getOptimizedImage(publicIdOrUrl, { width: size })} ${size}w`,
+    )
     .join(", ");
 
   return {
-    src: getOptimizedImage(publicId, { width: 800 }),
+    src: getOptimizedImage(publicIdOrUrl, { width: 800 }),
     srcSet,
     sizes: "(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 800px",
   };
