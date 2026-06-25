@@ -15,32 +15,32 @@
 
   <!-- Collections — use clean /collections/ paths, not query strings -->
   <url>
-    <loc>https://guntinoglam.com/collections/faransawi</loc>
+    <loc>https://guntinoglam.com/collections/Faransawi</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/maqbal</loc>
+    <loc>https://guntinoglam.com/collections/Maqbal</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/guntino</loc>
+    <loc>https://guntinoglam.com/collections/Guntino</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/stones</loc>
+    <loc>https://guntinoglam.com/collections/Stones</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/baati</loc>
+    <loc>https://guntinoglam.com/collections/Baati</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/traditional</loc>
+    <loc>https://guntinoglam.com/collections/Traditional</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
