@@ -19,6 +19,12 @@ import ShippingReturns from "../pages/Info/ShippingReturns";
 import RefundPolicy from "../pages/Info/RefundPolicy";
 import TermsOfService from "../pages/Info/TermsOfService";
 
+const CollectionRedirect = () => {
+  const { slug } = useParams();
+  return <Navigate to={`/products?collection=${slug}`} replace />;
+};
+
+
 const AppRoutes = () => {
   useScrollToTop()
   
@@ -34,6 +40,7 @@ const AppRoutes = () => {
       <Route element={<Layout />}>
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductPage />} />
+        <Route path="/collections/:slug" element={<CollectionRedirect />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />

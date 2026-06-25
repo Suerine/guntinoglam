@@ -115,8 +115,22 @@ function Products() {
           }
         />
         <meta property="og:title" content={collection !== 'All' ? `${collection} Collection | Guntino Glam` : 'Shop | Guntino Glam'} />
-        <meta property="og:url" content={`https://guntinoglam.com/products${collection !== 'All' ? `?collection=${collection}` : ''}`} />
-        <link rel="canonical" href={`https://guntinoglam.com/products${collection !== 'All' ? `?collection=${collection}` : ''}`} />
+        <meta
+           property="og:url"
+           content={
+             collection !== 'All'
+               ? `https://guntinoglam.com/collections/${collection.toLowerCase()}`
+               : 'https://guntinoglam.com/products'
+           }
+         />
+        <link
+            rel="canonical"
+            href={
+              collection !== 'All'
+                ? `https://guntinoglam.com/collections/${collection.toLowerCase()}`
+                : 'https://guntinoglam.com/products'
+            }
+          />
       </Helmet>
       <div style={{ minHeight: '100vh', background: '#FFF7FF' }}>
 
