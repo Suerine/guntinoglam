@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import Home from "../pages/Home/Home";
 import Layout from "../components/layout/Layout";
