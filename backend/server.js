@@ -35,6 +35,7 @@ const allowedOrigins = [
   "https://guntinoglam.vercel.app",
   "https://www.guntinoglam.com",
   "https://guntinoglam.com",
+  "https://guntinoglam.onrender.com",
 ];
 
 const corsOptions = {
