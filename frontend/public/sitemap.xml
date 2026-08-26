@@ -3,44 +3,44 @@
 
   <!-- Core pages -->
   <url>
-    <loc>https://guntinoglam.com/</loc>
+    <loc>https://www.guntinoglam.com/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/products</loc>
+    <loc>https://www.guntinoglam.com/products</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
 
   <!-- Collections — use clean /collections/ paths, not query strings -->
   <url>
-    <loc>https://guntinoglam.com/collections/Faransawi</loc>
+    <loc>https://www.guntinoglam.com/collections/Faransawi</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/Maqbal</loc>
+    <loc>https://www.guntinoglam.com/collections/Maqbal</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/Guntino</loc>
+    <loc>https://www.guntinoglam.com/collections/Guntino</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/Stones</loc>
+    <loc>https://www.guntinoglam.com/collections/Stones</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/Baati</loc>
+    <loc>https://www.guntinoglam.com/collections/Baati</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://guntinoglam.com/collections/Traditional</loc>
+    <loc>https://www.guntinoglam.com/collections/Traditional</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
