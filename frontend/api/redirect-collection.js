@@ -1,6 +1,6 @@
 export const config = { runtime: "edge" };
 
-export default function handler(req) {
+export default async function handler(req) {
   const url = new URL(req.url);
   const collection = url.searchParams.get("collection");
 
@@ -17,6 +17,7 @@ export default function handler(req) {
     );
   }
 
-  // No collection param — fall through to normal SPA
-  return Response.redirect(`https://www.guntinoglam.com/products`, 308);
+  // No collection param — serve the SPA shell instead of redirecting
+  const spaUrl = new URL("/index.html", req.url);
+  return fetch(spaUrl);
 }
