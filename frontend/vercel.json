@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/products", "destination": "/api/redirect-collection" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
