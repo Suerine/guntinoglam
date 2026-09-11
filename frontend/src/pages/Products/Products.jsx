@@ -12,17 +12,21 @@ import StonesGroupPic from "../../assets/images/1S0A6496.jpg"
 import MaqbalGroupPic from "../../assets/images/HeroImg5.jpg"
 import FaransawiGroupPic from "../../assets/images/HeroImage.jpg"
 import GuntinoGroupPic from "../../assets/images/1S0A6647.jpeg"
+import BaatiGroupPic from "../../assets/images/IMG_3166.jpg"
+import HidoGroupPic from "../../assets/images/IMG_3274.png"
+import JerseysGroupPic from "../../assets/images/IMG_2998.jpg"
 
 
 const CATEGORIES = ["All", "Dirac"]
-const COLLECTIONS = ["All", "Maqbal", "Stones", "Faransawi", "Guntino", "Baati", "Hido Iyo Dhaqan"]
+const COLLECTIONS = ["All", "Maqbal", "Stones", "Faransawi", "Guntino", "Baati", "Hido Iyo Dhaqan", "Jerseys"]
 const COLLECTION_IMAGES = {
   Maqbal: MaqbalGroupPic,
   Stones: StonesGroupPic,
   Faransawi: FaransawiGroupPic,
   Guntino: GuntinoGroupPic,
-  Baati: "/images/collections/baati-banner.jpg",
-  "Hido Iyo Dhaqan": "/images/collections/hido-banner.jpg",
+  Baati: BaatiGroupPic,
+  "Hido Iyo Dhaqan": HidoGroupPic,
+  Jerseys: JerseysGroupPic,
 }
 const PRODUCTS_PER_PAGE = 12 // 3 cols × 4 rows
 

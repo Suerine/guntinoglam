@@ -1,5 +1,12 @@
 import nodemailer from "nodemailer";
 
+const getBrandLogoUrl = () => {
+  const baseUrl = (
+    process.env.FRONTEND_URL || "https://www.guntinoglam.com"
+  ).replace(/\/$/, "");
+  return `${baseUrl}/LogoGuntino.svg`;
+};
+
 // Configure your email service here
 // Option 1: Gmail with App Password
 // const transporter = nodemailer.createTransport({
@@ -46,6 +53,7 @@ const generateGuestOrderEmailHTML = (order) => {
         body { font-family: 'Montserrat', sans-serif; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .brand-logo { display: block; margin: 0 auto 18px; width: 140px; max-width: 100%; }
         .header h1 { font-size: 32px; margin: 0; font-weight: 300; }
         .order-number { font-size: 14px; color: #666; margin-top: 10px; }
         .section { margin-bottom: 25px; }
@@ -62,6 +70,7 @@ const generateGuestOrderEmailHTML = (order) => {
     <body>
       <div class="container">
         <div class="header">
+          <img src="${getBrandLogoUrl()}" alt="Guntino Glam" class="brand-logo" />
           <h1>Order Confirmed! ♡</h1>
           <div class="order-number">Order #${order.orderId}</div>
         </div>
@@ -194,6 +203,7 @@ export const sendUserOrderConfirmationEmail = async (order, userEmail) => {
           body { font-family: 'Montserrat', sans-serif; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
           .header { text-align: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+          .brand-logo { display: block; margin: 0 auto 18px; width: 140px; max-width: 100%; }
           .header h1 { font-size: 32px; margin: 0; font-weight: 300; }
           .section { margin-bottom: 25px; }
           .section h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-bottom: 10px; }
@@ -209,6 +219,7 @@ export const sendUserOrderConfirmationEmail = async (order, userEmail) => {
       <body>
         <div class="container">
           <div class="header">
+            <img src="${getBrandLogoUrl()}" alt="Guntino Glam" class="brand-logo" />
             <h1>Order Confirmed! ♡</h1>
             <div style="font-size: 14px; color: #666; margin-top: 10px;">Order #${order._id}</div>
           </div>

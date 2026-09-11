@@ -1,5 +1,6 @@
 import axios from "axios";
 import Order from "../models/Order.js";
+import { sendUserOrderConfirmationEmail } from "../utils/emailService.js";
 
 export const verifyPayment = async (req, res) => {
   try {
@@ -131,9 +132,20 @@ export const createOrderAfterPayment = async (req, res) => {
     });
 
     const savedOrder = await order.save();
-    console.log("Order saved successfully:", savedOrder._id);
+    const populatedOrder = await savedOrder.populate(
+      "user",
+      "name email phone",
+    );
+    console.log("Order saved successfully:", populatedOrder._id);
 
-    res.status(201).json({ success: true, order: savedOrder });
+    if (populatedOrder.user?.email) {
+      await sendUserOrderConfirmationEmail(
+        populatedOrder,
+        populatedOrder.user.email,
+      );
+    }
+
+    res.status(201).json({ success: true, order: populatedOrder });
   } catch (err) {
     console.error("Create order error:", err.response?.data || err.message);
     console.error("Stack trace:", err.stack);

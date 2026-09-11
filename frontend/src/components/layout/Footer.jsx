@@ -191,7 +191,7 @@ const Footer = () => {
           marginBottom: '0.2rem',
           textTransform: 'uppercase',
         }}>
-          We sell and rent dirac · Ships worldwide
+          We sell and rent dirac · Shipping worldwide
         </h4>
         <h5 style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '0.8rem', color: 'rgba(0,0,0,0.35)',textTransform: 'uppercase' }}>
           For more information, please contact our customer support team on <a href="mailto:artbynajmaa@gmail.com?subject=Order%20Inquiry" className="text-pink-500 underline">artbynajmaa@gmail.com</a> or call us at <a href="tel:+254793904535" className="text-pink-500 underline">+254 793 904 535</a>.

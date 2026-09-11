@@ -3,7 +3,7 @@ import { useState, useContext, useEffect, useRef } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import Guntino_Logo from "../../assets/images/GuntinoGlam.jpg"
 import LoginCard from "../ui/LoginCard"
-import { FiMenu, FiX, FiShoppingCart, FiUser, FiSearch, FiHeart } from "react-icons/fi"
+import { FiMenu, FiX, FiShoppingCart, FiUser, FiSearch, FiHeart, FiChevronDown } from "react-icons/fi"
 import { CartContext } from "../../context/CartContext"
 import { AuthContext } from "../../context/AuthContext"
 import { WishlistContext } from "../../context/WishlistContext"
@@ -32,13 +32,25 @@ function Navbar() {
 
   const [showMiniCart, setShowMiniCart] = useState(false)
   const [pastHero, setPastHero] = useState(false)
+  const [isCollectionsOpen, setIsCollectionsOpen] = useState(false)
   const miniCartRef = useRef(null)
   const searchRef = useRef(null)
+  const collectionsMenuRef = useRef(null)
   const navigate = useNavigate()
   const scrollContainerRef = useRef(null)
 
   const [searchOpen, setSearchOpen] = useState(false)
   const searchInputRef = useRef(null)
+
+  const collectionLinks = [
+    { to: "/products?collection=Maqbal", label: "Maqbal" },
+    { to: "/products?collection=Stones", label: "Stones" },
+    { to: "/products?collection=Faransawi", label: "Faransawi" },
+    { to: "/products?collection=Guntino", label: "Guntino" },
+    { to: "/products?collection=Baati", label: "Baati" },
+    { to: "/products?collection=Hido Iyo Dhaqan", label: "Hido Iyo Dhaqan" },
+    { to: "/products?collection=Jerseys", label: "Jerseys" },
+  ]
 
   useEffect(() => {
   const hero = document.getElementById("hero-section")
@@ -82,6 +94,16 @@ function Navbar() {
     const handleClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setShowDropdown(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (collectionsMenuRef.current && !collectionsMenuRef.current.contains(e.target)) {
+        setIsCollectionsOpen(false)
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
@@ -158,7 +180,7 @@ function Navbar() {
        {/* Marquee — yellow accent bar */}
         <div className="w-full bg-pink-300 relative z-0 font-montserrat">
           <CurvedLoop
-            marqueeText={`· We sell and rent dirac · Ships worldwide`}
+            marqueeText={`· We sell and rent dirac · Shipping worldwide`}
             speed={1}
             curveAmount={0}
             className="fill-black"
@@ -175,19 +197,38 @@ function Navbar() {
           <div className="flex items-center justify-between">
 
              {/* Desktop nav links — left */}
-           <ul className="hidden md:flex gap-4 lg:gap-6 flex-1 uppercase">
-            {[
-              { to: "/products?collection=Maqbal", label: "Maqbal" },
-              { to: "/products?collection=Stones", label: "Stones" },
-              { to: "/products?collection=Faransawi", label: "Faransawi" },
-              { to: "/products?collection=Guntino", label: "Guntino" },
-              { to: "/products?collection=Baati", label: "Baati" },
-              { to: "/products?collection=Hido Iyo Dhaqan", label: "Hido Iyo Dhaqan" },
-            ].map(({ to, label }) => (
-              <li key={label}>
-                <Link to={to} className="nav-link-item">{label}</Link>
-              </li>
-            ))}
+          <ul className="hidden md:flex items-center gap-4 lg:gap-6 flex-1 uppercase">
+            <li className="relative" ref={collectionsMenuRef}>
+              <button
+                type="button"
+                onClick={() => setIsCollectionsOpen((prev) => !prev)}
+                className="nav-link-item flex items-center gap-1"
+              >
+                COLLECTIONS
+                <FiChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isCollectionsOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {isCollectionsOpen && (
+                <div className="absolute left-0 top-full mt-3 w-[420px]  border border-black/5 bg-white/95 p-4 shadow-[0_20px_40px_rgba(0,0,0,0.12)] backdrop-blur-sm z-50">
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                    {collectionLinks.map(({ to, label }) => (
+                      <Link
+                        key={label}
+                        to={to}
+                        onClick={() => setIsCollectionsOpen(false)}
+                        className="text-[11px] tracking-[0.12em] text-black/70 hover:text-black transition-colors duration-200 hover:underline"
+                      >
+                        {label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </li>
+
+            <li>
+              <Link to="/products" className="nav-link-item">All Products</Link>
+            </li>
           </ul>
 
             {/* Logo — center */}

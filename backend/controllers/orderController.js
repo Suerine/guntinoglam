@@ -2,7 +2,10 @@ import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
 import mongoose from "mongoose";
-import { sendGuestOrderConfirmationEmail } from "../utils/emailService.js";
+import {
+  sendGuestOrderConfirmationEmail,
+  sendUserOrderConfirmationEmail,
+} from "../utils/emailService.js";
 
 /* CREATE ORDER FROM CART */
 export const createOrder = async (req, res) => {
@@ -112,6 +115,13 @@ export const createOrder = async (req, res) => {
     await cart.save();
 
     const populatedOrder = await order.populate("user", "name email phone");
+
+    if (populatedOrder.user?.email) {
+      await sendUserOrderConfirmationEmail(
+        populatedOrder,
+        populatedOrder.user.email,
+      );
+    }
 
     res.status(201).json({
       message: "Order created successfully",
