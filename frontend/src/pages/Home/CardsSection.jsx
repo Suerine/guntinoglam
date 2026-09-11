@@ -35,10 +35,10 @@ const CardsSection = ({ isMobile }) => {
           <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute top-1/2 -translate-y-1/2 right-6 text-right">
-            <h2 className="text-white text-xl font-light tracking-widest">{card.title}</h2>
-            <p className="text-white/80 text-xs tracking-widest mt-1 relative inline-block">
+            <h2 className="text-black text-xl font-light tracking-widest">{card.title}</h2>
+            <p className="text-black/80 text-xs tracking-widest mt-1 relative inline-block">
               {card.description}
-              <span className="absolute left-0 -bottom-0.5 h-px w-full bg-white" />
+              <span className="absolute left-0 -bottom-0.5 h-px w-full bg-black" />
             </p>
           </div>
         </Link>
