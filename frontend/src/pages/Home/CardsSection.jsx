@@ -5,7 +5,7 @@ import exclusiveCardImage2 from '../../assets/images/IMG_8880.jpg'
 import exclusiveCardImage3 from '../../assets/images/1S0A6804.jpg'
 import exclusiveCardImage4 from '../../assets/images/IMG_8881.jpg'
 import exclusiveCardImage5 from '../../assets/images/IMGT0773.jpg'
-import exclusiveCardImage6 from '../../assets/images/1S0A6804.jpg'
+import exclusiveCardImage6 from '../../assets/images/IMG_3003.jpg'
 
 const cards = [
   { id: 1, image: exclusiveCardImage1, title: 'Faransawi', description: 'EXPLORE', collection: 'Faransawi' },
@@ -13,7 +13,7 @@ const cards = [
   { id: 3, image: exclusiveCardImage3, title: 'Guntino', description: 'EXPLORE', collection: 'Guntino' },
   { id: 4, image: exclusiveCardImage4, title: 'Baati', description: 'EXPLORE', collection: 'Baati' },
   { id: 5, image: exclusiveCardImage5, title: 'Maqbal', description: 'EXPLORE', collection: 'Maqbal' },
-  { id: 6, image: exclusiveCardImage3, title: 'Jerseys', description: 'EXPLORE', collection: 'Jerseys' },
+  { id: 6, image: exclusiveCardImage6, title: 'Jerseys', description: 'EXPLORE', collection: 'Jerseys' },
 ]
 
 const CardsSection = ({ isMobile }) => {
